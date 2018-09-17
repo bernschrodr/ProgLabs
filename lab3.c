@@ -4,7 +4,7 @@
 int main() {
     int hex, oct;
     printf("Введите целое шестнадцетиричное число");
-    scanf("%x", &hex);
+    scanf("%X", &hex);
     printf("dec = %d \n", hex);
     printf("oct = %o \n", hex);
     printf("oct >> 3 = %o \n", hex >> 3);
