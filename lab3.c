@@ -11,7 +11,7 @@ int main() {
     printf("oct = %o \n", hex);
     printf("!oct = %o \n", !hex);
     scanf("%o", &oct);
-    printf("hex && oct = %o \n", hex || oct);
+    printf("hex || oct = %o \n", hex || oct);
 
     return 0;
 }
