@@ -28,7 +28,7 @@ int main() {
     printf("\n");
 
     for (int i = 0; i < 2; i++) {
-        printf("%d ", matrx_res[i][0]);
+        printf("%d ", matrx_res[1][i]);
     }
 
     return 0;
