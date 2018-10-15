@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main() {
     int arr[9] = {99, 88, 77, 66, 55, 44, 33, 22, 11};
@@ -12,12 +13,14 @@ int main() {
     
     printf("\n");
 
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; i < 2; i++){
-
-            matrx_res[i][j] += matrx[j][i] * matrx2[i][j];
-        }
-    }
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++)
+		{
+			matrx_res[i][j] = 0;
+			for (int k = 0; k < 2; k++)
+				matrx_res[i][j] += matrx[i][k] * matrx2[k][j];
+		}
+	}
 
     for (int i = 0; i < 2; i++) {
         printf("%d ", matrx_res[0][i]);
