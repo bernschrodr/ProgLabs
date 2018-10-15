@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -13,6 +14,16 @@ int main() {
 
 	for (int i = 0; i < 4; ++i)
 		printf("%c ", *(Arr + i));
+
+	printf("\n");
+
+	Arr[0] = { 'W' };
+	Arr[1] = { 'O' };
+	Arr[2] = { 'R' };
+	Arr[3] = { 'K' };
+
+	for (int i = 0; i < 4; ++i)
+		printf("%c ", Arr[i]);
 
 	free(Arr);
 	return 0;
