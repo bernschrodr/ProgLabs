@@ -27,6 +27,15 @@ int main(){
     c2 = strchr(Inp[3],c);
     printf("First entry: %d\n", c2 - Inp[3] + 1);
     printf("Length line1 in line2: %d\n", strspn(Inp[1],Inp[2]));
-    printf("Leks line1: %s",strtok(Inp[0]," ,.-_/|"));
 
+    char *pch = strtok(Inp[1]," ,.-_");
+
+    printf("Leks in line2:\n");
+
+    while(pch != NULL)
+    {
+        printf("%s\n", pch);
+        pch = strtok(NULL, "  ,.-_");
+    }
+    return 0;
 }   

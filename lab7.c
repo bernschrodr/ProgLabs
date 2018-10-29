@@ -20,7 +20,7 @@
     struct Triangle
     {
         Coordinate a,b,c;
-    }
+    };
 
     float distance(Coordinate a, Coordinate b){
     float dx = a.x - b.x;
