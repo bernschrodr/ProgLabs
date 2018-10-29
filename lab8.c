@@ -4,7 +4,8 @@
 
 int main(){
     int n;
-    char Inp[3][256],c;
+    char Inp[3][256]={0},c;
+    char * c2;
     printf("enter first line for concatination (max 255 chars)\n");
     scanf("%255s", &Inp[0]);
     printf("enter second line for concatination (max 255 chars)\n");
@@ -21,11 +22,11 @@ int main(){
     scanf("%255s", &Inp[3]);
 
     printf("enter char for search first entry in string: \n");
-    scanf(" %c", &c);
+    scanf("%1s", &c);
    
-
-    printf("First entry: %d\n", strchr(Inp[3],c));
+    c2 = strchr(Inp[3],c);
+    printf("First entry: %d\n", c2 - Inp[3] + 1);
     printf("Length line1 in line2: %d\n", strspn(Inp[1],Inp[2]));
-    printf("Leks line1: %s",strtok(Inp[1]," ,.-_/|"));
+    printf("Leks line1: %s",strtok(Inp[0]," ,.-_/|"));
 
 }   
