@@ -1,6 +1,6 @@
 #include <stdio.h>
-
-void DeleteSpaces(char inp[255]) {
+ 
+void DeleteSpaces(char &inp[255]) {
 	while(count != 0){
 		int count = 0;
 			for(int i =1; i<255; i++)
@@ -11,13 +11,21 @@ void DeleteSpaces(char inp[255]) {
 					for(int j = i-1; j<255; j++)
 					{
 						inp[j]=inp[j+1];
-						if(inp[j] == '0')
+						if(inp[j] == '')
 							break;
 					}
 				}
 			}
 	}
 	}
-	
+ 
 }
 }
+ 
+int main(void) {
+	char inp[255]="pd das afgs 212";
+	DeleteSpaces(inp);
+	// your code goes here
+	return 0;
+}
+ 
