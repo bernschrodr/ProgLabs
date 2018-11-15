@@ -38,12 +38,16 @@ float Perimeter(Triangle trg)
     return ab + bc + ca;
 }
 
-struct Card
+union States
+{
+    struct Card
 {
     unsigned State : 1;
     unsigned SD : 1;
     unsigned CompactFlash : 1;
     unsigned MemoryStick : 1;
+};
+    unsigned states;
 };
 
 int main()
@@ -69,9 +73,9 @@ int main()
     printf("Enter Hex:\n");
     scanf("%x", &Hex);
 
-    struct Card Inp = {Hex >> 3, (Hex % 8) >> 2, (Hex % 4) >> 1, (Hex % 2)};
 
-    
+    union States Inp;
+    Inp.states = Hex;
 
     Inp.State == 1 ? printf("Card Reader is on (+)\n") : printf("Card Reader is off (-)\n");
     Inp.SD == 1 ? printf("SD Card is active (+)\n") : printf("SD Card isn't active (-)\n");
