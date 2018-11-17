@@ -1,23 +1,36 @@
 #include <stdio.h>
 #include <windows.h>
-#include <fileapi.h>
+#include <direct.h>
 
 int main(int argc, char **argv)
 {
     FILE *fout;
     fout = fopen("info.txt", "w");
-    int i;
 
-    printf("%d\n", argc);
-    for (i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         mkdir(argv[i]);
-        fprintf(fout, "%s\n", argv[i]);
-    }
+    };
 
-LPWIN32_FIND_DATA data;
-HANDLE h = FindFirstFile( "*.*", &data );
-if( data.dwFileAttributes | FILE_ATTRIBUTE_DIRECTORY )
+    
+    char current_work_dir[FILENAME_MAX];
+    _getcwd(current_work_dir, sizeof(current_work_dir));
+    strcat(current_work_dir, "\\*");
 
-        return 0;
-    }
+    WIN32_FIND_DATA FindFileData;
+	HANDLE hf;
+	hf=FindFirstFile(current_work_dir, &FindFileData);
+	if (hf!=INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			if(strchr(FindFileData.cFileName, '.') == NULL)
+            fprintf(fout,"%s\n", FindFileData.cFileName);
+		}
+		while (FindNextFile(hf,&FindFileData)!=0);
+		FindClose(hf);
+	}
+
+    
+    return 0;
+}
