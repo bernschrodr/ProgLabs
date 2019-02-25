@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "-g", "lab1.cpp", "procedures1.cpp", "-o", "a.exe"
+                "-g", "lab2.cpp", "procedures2.cpp", "-o", "a.exe"
             ],
             "group": {
                 "kind": "build",
