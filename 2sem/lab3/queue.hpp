@@ -20,4 +20,5 @@ class queue
     const std::string getLast();
     const int getLength();
     const void prnt();
+    void reset();
 };

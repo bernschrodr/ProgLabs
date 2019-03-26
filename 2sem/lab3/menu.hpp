@@ -8,6 +8,7 @@ class Menu
   public:
     // QUEUE
 
+    static void Launch();
     static void Start();
     static void QueueCreate();
     static void QueueMenu(queue &que);

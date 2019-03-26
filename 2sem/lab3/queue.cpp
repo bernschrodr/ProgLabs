@@ -49,18 +49,25 @@ std::string queue::pop()
         return que[out++];
     else
     {
-        std::cout << "queue is empty" << std::endl;
+        reset();
         return "";
     }
 }
 
+    void queue::reset(){
+        out = 0;
+        in = 0;
+        for(int i = 0; i < size; i++)
+            que[i] = "";
+
+}
+
 const std::string queue::getFirst()
 {
-    if (out > 0 && in != out)
-        return que[out - 1];
+    if (out >= 0 && in != out)
+        return que[out];
     else
     {
-        std::cout << "queue is empty" << std::endl;
         return "";
     }
 }
@@ -71,7 +78,7 @@ const std::string queue::getLast()
         return que[in - 1];
     else
     {
-        std::cout << "queue is empty" << std::endl;
+        
         return "";
     }
 }
@@ -83,6 +90,6 @@ const int queue::getLength()
 
 const void queue::prnt()
 {
-    for (unsigned int i = 0; i < in; i++)
+    for (unsigned int i = out; i < in; i++)
         std::cout << que[i] << std::endl;
 }

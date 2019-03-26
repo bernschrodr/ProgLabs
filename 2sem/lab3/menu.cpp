@@ -1,30 +1,29 @@
 #include <iostream>
-#include "queue.hpp"
-#include "complex.hpp"
-#include <climits>
-#include <unistd.h>
+#include "menu.hpp"
+#include <cfloat>
+#include <string>
 
 using namespace std;
 
-class Menu
-{
+    void Menu::Launch(){
+            Start();
+    }
 
-  public:
-
-    static void Start()
-    {   
-        while(true){
+    void Menu::Start()
+    {   while(true){
         cout << "Сhoose what you want to do:" << endl
              << "(1) - work with Complex " << endl
              << "(2) - work with Queue" << endl
              << "------------------------------" << endl
              << "(9) - Exit" << endl;
         int input = 0;
+        
         cin >> input;
+        system("cls");
         switch (input)
         {
         case 1:
-            ComplexCreate();
+            ComplexStart();
             break;
         case 2:
             QueueCreate();
@@ -41,40 +40,42 @@ class Menu
     }
 
 
-    static void QueueCreate()
+    void Menu::QueueCreate()
     {   
-        while(true){
+        
         int size = 0;
+        string inp = "";
         cout << "Enter Queue size:" << endl;
-        cin >> size;
-        if (size > 0)
-        {
+
+        cin >> inp;
+        size = stoi(inp);
+
+        while (sscanf(inp.c_str(), "%d", &size) != 1 || size < 2) {
+            WrongInput(); // выводим сообщение об ошибке
+        getline(cin, inp); // считываем строку повторно
+    }
             queue que(size);
             QueueMenu(que);
-            break;
-        }
-        else
-        {
-            WrongInput();
-        }
-    }
+        
     }
 
-    static void QueueMenu(queue &que)
+    void Menu::QueueMenu(queue &que)
     {   
         while(true){
-        cout << "Сhoose what you want to do:" << endl
+            
+        cout << "Choose what you want to do:" << endl
              << "(1) - Push " << endl
-             << "(2) - Pop" << endl
+             << "(2) - Pop (pop all for reset queue)" << endl
              << "(3) - Get First" << endl
              << "(4) - Get Last" << endl
              << "(5) - Get Length" << endl
-             << "(6) - Print all Queue" << endl
-             << "------------------------------" << endl
-             << "(9) - Return" << endl;
+             << "(6) - Print all Queue" << endl << endl
+             << "(9) - Return" << endl
+             << "------------------------------" << endl;
 
             int operations = 0;
             cin >> operations;
+            system("cls");
             switch (operations)
             {
                 case 1:
@@ -99,6 +100,7 @@ class Menu
 
                 case 6:
                     PrntQueue(que);
+                    break;
 
                 case 9:
                     return;
@@ -110,68 +112,78 @@ class Menu
         }
     }
 
-    static void Push(queue &que)
+    void Menu::Push(queue &que)
     {
         cout << "Enter string for Push: " << endl
-             << "(1) - Enter 1 for return";
+             << "(0) - Enter 0 for return" << endl;
         string input = "";
-        while(input != "1"){
-            cin >> input;
-            cout << input << endl;
-            que.push(input);
+        while(input != "0"){
+            if(input != "0"){
+                cin >> input;
+                que.push(input);
+                }
+
         }
         return;
     }
 
-    static void Pop(queue &que){
-        cout << "poped: " << endl;
-        GetFirst(que);
+    void Menu::Pop(queue &que){
+        cout << "poped: " << que.getFirst() << endl;
+        
         que.pop();
     }
 
-    static void GetFirst(queue &que){
-        cout << que.getFirst() << endl;
+    void Menu::GetFirst(queue &que){
+        cout << endl << "Result : " << que.getFirst() << endl << endl;
     }
 
-    static void GetLast(queue &que){
-        cout << que.getLast() << endl;
+    void Menu::GetLast(queue &que){
+        cout << endl << "Result : " << que.getLast() << endl << endl;
     }
 
-    static void GetLength(queue &que){
-        cout << que.getLength() << endl;
+    void Menu::GetLength(queue &que){
+        cout << endl << "Result : " << que.getLength() << endl << endl;
     }
 
-    static void PrntQueue(queue &que){
+    void Menu::PrntQueue(queue &que){
         que.prnt();
     }
 
     // COMPLEX
 
-    static void ComplexStart(){
+    void Menu::ComplexStart(){
         comp first = ComplexCreate();
         ComplexMenu(first);
         return;
     }
 
-    static comp ComplexCreate(){
+    comp Menu::ComplexCreate(){
         while(true){
-        double z = INT_MIN;
-        double zi = INT_MIN;
+        double z = DBL_MIN;
+        double zi = DBL_MIN;
+        string inp = "";
         cout << "Enter real part: " << endl;
-        cin >> z;
-        if (z == INT_MIN)
-        {
-            WrongInput();
-            continue;
-        }
+    
+        cin >> inp;
+
+        z = stod(inp);
+
+        while (sscanf(inp.c_str(), "%d", &z) != 1 || z == DBL_MIN) { 
+            WrongInput(); // выводим сообщение об ошибке
+        getline(cin, inp); // считываем строку повторно
+    }
 
         cout << "Enter complex part: " << endl;
-        cin >> zi;
-        if (zi == INT_MIN)
-        {
-            WrongInput();
-            continue;
-        }
+        inp = "";
+
+        cin >> inp;
+
+        zi = stod(inp);
+
+        while (sscanf(inp.c_str(), "%d", &zi) != 1 || zi == DBL_MIN) {
+            WrongInput(); // выводим сообщение об ошибке
+        getline(cin, inp); // считываем строку повторно
+    }
 
             comp compNum(z,zi);
             return compNum;
@@ -180,9 +192,9 @@ class Menu
     }
     }
 
-    static void ComplexMenu(comp &complexNum){
+    void Menu::ComplexMenu(comp &complexNum){
         while(true){
-        cout << "Сhoose what you want to do:" << endl
+        cout << "Choose what you want to do:" << endl
              << "(1) - Sum " << endl
              << "(2) - Multiply on num" << endl
              << "(3) - Multiply on complex" << endl
@@ -193,6 +205,7 @@ class Menu
 
             int operations = 0;
             cin >> operations;
+            system("cls");
             switch (operations)
             {
                 case 1:
@@ -226,19 +239,21 @@ class Menu
         }
     }
 
-    static void Sum(comp &complexNum){
+    void Menu::Sum(comp &complexNum){
         comp second = ComplexCreate();
         complexNum.sum(second);
         PrntComplex(complexNum);
 
     }
 
-    static void MultiplyNum(comp &complexNum){
+    void Menu::MultiplyNum(comp &complexNum){
         
         while(true)
         {   
             int num = 0;
             cout << "Enter num for multiply: " << endl;
+            cin >> num;
+
             if(num == 0){
                 WrongInput();
                 continue;
@@ -252,23 +267,24 @@ class Menu
 
     }
 
-    static void MultiplyComplex(comp &complexNum){
+    void Menu::MultiplyComplex(comp &complexNum){
             cout << "Input second complex num for multiply" << endl;
             comp second = ComplexCreate();
+            complexNum.multiply(second);
             complexNum.prnt();
         
     }
 
-    static void GetLength(comp &complexNum){
+    void Menu::GetLength(comp &complexNum){
         cout << complexNum.abs() << endl;
 
     }
 
-    static void PrntComplex(comp &complexNum){
+    void Menu::PrntComplex(comp &complexNum){
         complexNum.prnt();
     }
 
-    static void WrongInput(){
-        cout << "Wrong size, try again:" << endl;
-    }
+    void Menu::WrongInput(){
+        cerr << "Wrong size, try again:" << endl;
+    
 };

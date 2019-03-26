@@ -48,9 +48,10 @@ int main()
     second.getLast();
     second.getLast();
 
-    //queue is empty
 
-    //Menu::Start();
+    //queue is empty
+        Menu::Launch();
+    
 
     return 0;
 }
