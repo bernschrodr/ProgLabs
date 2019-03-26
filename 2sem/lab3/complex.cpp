@@ -45,4 +45,3 @@ const void comp::prnt()
     std::cout << this->zi << "i" << std::endl;
     ;
 }
-

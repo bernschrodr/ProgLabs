@@ -54,12 +54,12 @@ std::string queue::pop()
     }
 }
 
-    void queue::reset(){
-        out = 0;
-        in = 0;
-        for(int i = 0; i < size; i++)
-            que[i] = "";
-
+void queue::reset()
+{
+    out = 0;
+    in = 0;
+    for (int i = 0; i < size; i++)
+        que[i] = "";
 }
 
 const std::string queue::getFirst()
@@ -78,7 +78,7 @@ const std::string queue::getLast()
         return que[in - 1];
     else
     {
-        
+
         return "";
     }
 }
