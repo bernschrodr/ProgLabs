@@ -1,0 +1,1 @@
+g++ -g main.cpp Edit.cpp NumericEdit.cpp -o main.exe

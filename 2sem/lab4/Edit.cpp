@@ -14,6 +14,7 @@ Edit::Edit(const float &x, const float &y)
 Edit::Edit(const float &x, const float &y, const string &str)
 {
     coord = new Coordinate(x, y);
+    this->history += str + "\n";
     this->text = str;
 }
 
@@ -27,6 +28,7 @@ Edit::Edit(const float &x, const float &y, const string &str, const bool &save_f
 {
     coord = new Coordinate(x, y);
     this->save_flag = save_flag;
+    this->history += str + "\n";
     this->text = str;
 }
 
@@ -42,6 +44,7 @@ Edit::Edit(const float &x, const float &y, const string &str, const bool &save_f
     coord = new Coordinate(x, y);
     this->save_flag = save_flag;
     this->autofill_flag = autofill_flag;
+    this->history += str + "\n";
     this->text = str;
 }
 
@@ -51,6 +54,10 @@ Edit::Edit(const Edit &obj)
     this->autofill_flag = obj.autofill_flag;
     this->save_flag = obj.save_flag;
     this->coord = obj.coord;
+}
+
+Edit::~Edit()
+{
 }
 
 bool Coordinate::equal(Coordinate &obj)
@@ -97,9 +104,10 @@ void Edit::AutoFill_Flag(const bool &flag)
 {
     autofill_flag = flag;
 };
-void Edit::AutoFill(const string &str){
-    if(autofill_flag == true)
-        text = history + str;
+void Edit::AutoFill(const string &str)
+{
+    if (autofill_flag == true)
+        text = history + "\n" + str;
     else
         text = str;
 };

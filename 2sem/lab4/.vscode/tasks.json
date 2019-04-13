@@ -4,14 +4,14 @@
     {
       "type": "shell",
       "label": "g++.exe build active file",
-      "command": "C:\\MinGW\\bin\\g++.exe",
+      "command": "g++",
       "args": [
         "-g",
         "main.cpp",
         "Edit.cpp",
         "NumericEdit.cpp",
         "-o",
-        "${fileBasenameNoExtension}.exe"
+        "main.exe"
       ],
       "options": {},
       "problemMatcher": [

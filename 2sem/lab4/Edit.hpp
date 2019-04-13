@@ -35,9 +35,8 @@ public:
   bool equal(Edit &obj);
   Coordinate GetCoord();
   void SetCoord(const float &x, const float &y);
-  void Input(const string &str);
+  virtual void Input(const string &str);
   void SaveFlag(const bool &flag);
   void AutoFill_Flag(const bool &flag);
   void AutoFill(const string &str);
 };
-
