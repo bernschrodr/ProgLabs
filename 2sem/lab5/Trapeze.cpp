@@ -60,8 +60,8 @@ void Trapeze::initFromDialog()
     cin >> mas;
 
     height = abs(ru_corner.y) + abs(rd_corner.y);
-    top_line = abs(lu_corner.x) + abs(ru_corner.x);
-    bottom_line = abs(ld_corner.x) + abs(rd_corner.x);
+    top_line =  abs(ru_corner.x - lu_corner.x);
+    bottom_line = abs(rd_corner.x - ld_corner.x);
 }
 
 double Trapeze::square()
@@ -86,7 +86,7 @@ CVector2D Trapeze::position()
     return CVector2D(top_line != bottom_line ?
     (height / 3) * (2 * max(top_line, bottom_line) + min(top_line, bottom_line)) /
     (top_line + bottom_line)
-    : pow(top_line,2), ld_corner.x/2) ;
+    : pow(top_line,2), ld_corner.x/2);
 }
 
 bool Trapeze::operator==(IPhysObject &ob)

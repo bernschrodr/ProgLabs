@@ -44,7 +44,7 @@
     }
 
     double Line::perimeter(){
-        return sqrt(pow(start->x - end->x,2)+ pow(start->x - end->x,2));
+        return sqrt(pow(start->x - end->x,2)+ pow(start->y - end->y,2));
     }
 
     double Line::mass(){
@@ -52,7 +52,7 @@
     }
 
     CVector2D Line::position(){
-        return CVector2D(abs(start->x - end->x)/2, abs(start->x - end->x)/2);
+        return CVector2D(abs(start->x - end->x)/2, abs(start->y - end->y)/2);
     }
 
     bool Line::operator==(IPhysObject& ob ){
