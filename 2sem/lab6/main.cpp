@@ -13,7 +13,7 @@ int main(int argc, char **argv)
         int a, b;
     cout << "Enter 2 numbers for swap " << endl;
     cin >> a >> b;
-    swap(a, b);
+    swp(a, b);
     cout << "first number: " << a << endl
          << "Second number: " << b << endl;
  
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     int index;
     int value = -100;
 
-    system("clear");
+    system("cls");
     while (value != 0)
     {
         cout << "FILL ARRAY" << endl
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
             }
         }
     }
-    system("clear");
+    system("cls");
     while (true)
     {
         
@@ -88,5 +88,7 @@ int main(int argc, char **argv)
             }
         }
     }
+    
+
     return 0;
 }

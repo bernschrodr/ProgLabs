@@ -15,15 +15,18 @@ class Array
             throw Ex(index, size);
         return array[index];
     }
+    ~Array(){
+      delete[] array;
+    }
 
   private:
     T *array;
 };
 
 template <class T>
-void swap(T *a, T *b)
+void swp(T &a, T &b)
 {
-    T c = a;
+    T c = b;
     b = a;
     a = c;
 }

@@ -6,6 +6,6 @@ using namespace std;
 Ex::Ex(int index, int size){
     if(index < 0)
         dataState = NegativeArrayIndexException;
-    if(index > size)
+    if(index >= size)
         dataState = ArrayIndexOutOfBoundsException;
     }
