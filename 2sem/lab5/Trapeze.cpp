@@ -1,4 +1,5 @@
 #include "Trapeze.hpp"
+#include "Line.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -116,3 +117,4 @@ void Trapeze::draw()
          << "Centre of mass: " << "x:" << position().x << " y:"
          << position().y << endl;
 }
+

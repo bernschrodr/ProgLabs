@@ -4,6 +4,8 @@
 #include "IGeoFig.hpp"
 #include "IPhysObject.hpp"
 #include "IPrintable.hpp"
+#include <vector>
+
 
 #ifndef TRAPEZE
 #define TRAPEZE
@@ -18,7 +20,6 @@ class Trapeze : BaseCObject, IDialogInitiable, IGeoFig, IPhysObject, IPrintable
 
     Trapeze();
     Trapeze(CVector2D &lu_corner, CVector2D &ru_corner, CVector2D &ld_corner, CVector2D &rd_corner);
-    ~Trapeze();
 
     const char *classname();
     unsigned int size();
@@ -31,4 +32,6 @@ class Trapeze : BaseCObject, IDialogInitiable, IGeoFig, IPhysObject, IPrintable
     bool operator<(IPhysObject &ob);
     void draw();
 };
+
+
 #endif

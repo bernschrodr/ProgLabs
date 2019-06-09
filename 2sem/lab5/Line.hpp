@@ -21,7 +21,6 @@ class Line : BaseCObject, IDialogInitiable, IGeoFig, IPhysObject, IPrintable
 
     Line();
     Line(CVector2D &A, CVector2D &B);
-    ~Line();
 
     const char* classname();
     unsigned int size();
