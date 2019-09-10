@@ -55,8 +55,8 @@ namespace lab1
         {
             int resNumerator,resDenominator;
             resDenominator = firstFraction.Denominator * secondFraction.Denominator;
-            resNumerator = firstFraction.Numerator * resDenominator / firstFraction.Denominator 
-            + secondFraction.Numerator * resDenominator / secondFraction.Denominator;
+            resNumerator = firstFraction.Numerator * secondFraction.Denominator 
+            + secondFraction.Numerator * firstFraction.Denominator;
 
             return new RationalFraction(resNumerator,resDenominator);
         }
@@ -230,6 +230,7 @@ namespace lab1
         public Polinom(RationalFraction[] polinom, int constant = 0)
         {
             this.polinom = polinom;
+            this.countOfElements = polinom.Length;
         }
 
         public static Polinom operator +(Polinom firstPolinom, Polinom secondPolinom)
@@ -263,6 +264,14 @@ namespace lab1
             return new Polinom(resPolinom);
         }
 
+
+        public override string ToString(){
+            string str = "";
+            for(var i = 0; i < countOfElements; i++){
+                str += polinom[i].DoubleValue + "x^" + (i + 1).ToString() + (i != countOfElements-1 ? " + " : " ");
+            }
+            return str;
+        }
     }
 
     class Program
@@ -296,6 +305,8 @@ namespace lab1
             Polinom firstPolinom = new Polinom(setFromFile);
             Polinom secondPolinom = new Polinom(set);
             Polinom resPolinom = firstPolinom + secondPolinom;
+            string strPolinom = resPolinom.ToString();
+            Console.WriteLine(strPolinom);
          }
     }
 }
