@@ -6,9 +6,22 @@ namespace lab1
     {
 
         private int numerator, denominator;
+        public bool isValid;
+        public bool IsValid{
+            private set => isValid = value;
+            get => isValid;
+        }
         private double doubleValue;
         public RationalFraction(int numerator, int denominator)
         {
+            if(denominator == 0){
+                isValid = false;
+                return;            
+            }
+            else
+            {
+                isValid = true;
+            }
             this.numerator = numerator;
             this.denominator = denominator;
             this.doubleValue = (double)numerator / denominator;
@@ -26,10 +39,10 @@ namespace lab1
             get => denominator;
         }
 
-        public double DoubleValue
+        private double DoubleValue
         {
             get => doubleValue;
-            private set => doubleValue = value;
+            set => doubleValue = value;
 
         }
 

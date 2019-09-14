@@ -71,6 +71,9 @@ namespace lab1
                         continue;
                     }
 
+                    if(denominator == 0){
+                        continue;
+                    }
                     set.Add(new RationalFraction(numerator, denominator));
                 }
 
@@ -130,13 +133,17 @@ namespace lab1
 
         public void add(RationalFraction fraction)
         {
+            if(!fraction.IsValid){
+                return;
+            }
+
             if (maxFraction != null && maxFraction != null)
             {
                 set.Add(fraction);
                 changed = true;
-                if (fraction.DoubleValue < minFraction.DoubleValue)
+                if (fraction < minFraction)
                     minFraction = fraction;
-                if (fraction.DoubleValue > maxFraction.DoubleValue)
+                if (fraction > maxFraction)
                     maxFraction = fraction;
             }
             else

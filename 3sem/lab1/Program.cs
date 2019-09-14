@@ -11,12 +11,12 @@ namespace lab1
             Console.WriteLine("Start");
             SetOfFractions set = new SetOfFractions();
             set.add(new RationalFraction(1, 5));
-            set.add(new RationalFraction(1, 5));
+            set.add(new RationalFraction(1, 9));
             set.add(new RationalFraction(1, 5));
             set.add(new RationalFraction(12, 5));
             set.add(new RationalFraction(1, 10));
             Console.WriteLine(set.countLessThan(new RationalFraction(1, 100)));
-            Console.WriteLine(set.countMoreThan(new RationalFraction(1, 100)));
+            Console.WriteLine(set.countMoreThan(new RationalFraction(1, 5)));
             Console.WriteLine(set.countLessThan(new RationalFraction(1, 100)));
             Console.WriteLine(set.countMoreThan(new RationalFraction(1, 100)));
             set.add(new RationalFraction(4, 32));

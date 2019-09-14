@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace lab1
 {
     public class Polinom
@@ -59,12 +61,13 @@ namespace lab1
 
         public override string ToString()
         {
-            string str = "";
+            
+            List<string> elements = new List<string>();
             for (var i = 0; i < countOfElements; i++)
             {
-                str += polinom[i].Numerator.ToString() + '/' + '*' + polinom[i].Denominator.ToString() + "x^" + (i + 1).ToString() + (i != countOfElements - 1 ? " + " : " ");
+                elements.Add($"{polinom[i]}x^{i + 1}");
             }
-            return str;
+            return string.Join(" + ", elements);
         }
     }
 }
