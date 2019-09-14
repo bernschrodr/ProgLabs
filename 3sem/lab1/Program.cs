@@ -2,7 +2,7 @@
 using System.IO;
 
 namespace lab1
-{   
+{
 
     class Program
     {
@@ -27,12 +27,21 @@ namespace lab1
 
             StreamReader sr = new StreamReader("input.txt");
             SetOfFractions setFromFile = new SetOfFractions(sr);
-            Console.WriteLine(setFromFile.countLessThan(new RationalFraction(1, 100)));
-            Console.WriteLine(setFromFile.countMoreThan(new RationalFraction(1, 100)));
-            Console.WriteLine(setFromFile.countLessThan(new RationalFraction(1, 100)));
-            Console.WriteLine(setFromFile.countMoreThan(new RationalFraction(1, 100)));
+            Polinom firstPolinom;
+            if (setFromFile.Created)
+            {
+                Console.WriteLine(setFromFile.countLessThan(new RationalFraction(1, 100)));
+                Console.WriteLine(setFromFile.countMoreThan(new RationalFraction(1, 100)));
+                Console.WriteLine(setFromFile.countLessThan(new RationalFraction(1, 100)));
+                Console.WriteLine(setFromFile.countMoreThan(new RationalFraction(1, 100)));
+                firstPolinom = new Polinom(setFromFile);
+            }
+            else
+            {
+                firstPolinom = new Polinom(set);
+            }
 
-            Polinom firstPolinom = new Polinom(setFromFile);
+
             Polinom secondPolinom = new Polinom(set);
             Polinom resPolinom = firstPolinom + secondPolinom;
             string strPolinom = resPolinom.ToString();

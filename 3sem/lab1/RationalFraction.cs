@@ -46,7 +46,7 @@ namespace lab1
 
         public override string ToString()
         {
-            return numerator.ToString() + '/' + denominator.ToString() + ' ';
+            return $"{numerator}/{denominator}"; //numerator.ToString() + '/' + denominator.ToString() + ' ';
         }
 
         public static RationalFraction operator +(RationalFraction firstFraction, RationalFraction secondFraction)
@@ -59,6 +59,26 @@ namespace lab1
             return new RationalFraction(resNumerator, resDenominator);
         }
 
+        public static bool operator <(RationalFraction firstFraction, RationalFraction secondFraction)
+        {
+            bool result = false;
+            if(firstFraction.Numerator * secondFraction.Denominator < secondFraction.Numerator * firstFraction.Denominator){
+                result = true;
+            }
+            return result;
+        }
+
+        public static bool operator >(RationalFraction firstFraction, RationalFraction secondFraction)
+        {
+            bool result;
+            if(firstFraction.Numerator * secondFraction.Denominator > secondFraction.Numerator * firstFraction.Denominator){
+                result = true;
+            }
+            else{
+                result = false;
+            }
+            return result;
+        }
 
 
 

@@ -7,6 +7,11 @@ namespace lab1
 {
     public class SetOfFractions
     {
+        bool created;
+        public bool Created{
+            private set => created = value;
+            get => created;
+        }
         List<RationalFraction> set;
         public List<RationalFraction> Set
         {
@@ -27,6 +32,7 @@ namespace lab1
             minFraction = null;
             changed = false;
             Set = new List<RationalFraction>();
+            created = true;
         }
 
         public SetOfFractions(StreamReader sr)
@@ -34,9 +40,17 @@ namespace lab1
             maxFraction = null;
             minFraction = null;
             changed = false;
+            string input;
             Set = new List<RationalFraction>();
-
-            string input = sr.ReadToEnd();
+            try
+            {
+                input = sr.ReadToEnd();
+            }
+            catch(System.Exception e)
+            {
+                created = false;
+                return;
+            }
             char[] delimiterChars = { ' ', ':', '\r', '\n', '/', '\\' };
             string[] splitedFractions = input.Split(delimiterChars);
             int lastElementNumber = splitedFractions.Length - splitedFractions.Length % 2;
@@ -61,6 +75,7 @@ namespace lab1
                 }
 
             }
+            created = true;
         }
 
         public int countMoreThan(RationalFraction fraction)
@@ -80,7 +95,7 @@ namespace lab1
 
             foreach (var fract in this.set)
             {
-                if (fract.DoubleValue > fraction.DoubleValue)
+                if (fract > fraction)
                     count++;
             }
 
@@ -105,7 +120,7 @@ namespace lab1
 
             foreach (var fract in this.set)
             {
-                if (fract.DoubleValue < fraction.DoubleValue)
+                if (fract < fraction)
                     count++;
             }
 
