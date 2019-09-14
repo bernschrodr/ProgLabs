@@ -63,20 +63,23 @@ namespace lab2
         }
 
         Artist artist;
+        public Artist Artist{
+            get=>artist;
+        }
         List<Track> tracks;
 
-        public Album(string name, CatalogueTypes type,ref Artist artist) : base(name, type)
+        public Album(string name,ref Artist artist, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.artist = artist;
 
         }
-        public Album(string name, CatalogueTypes type, ref Genre genre , ref Artist artist) : base(name, type)
+        public Album(string name, ref Genre genre , ref Artist artist,CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;
 
         }
-        public Album(string name, CatalogueTypes type, ref Genre genre, ref Artist artist, List<Track> tracks) : base(name, type)
+        public Album(string name, ref Genre genre, ref Artist artist, List<Track> tracks,CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;
@@ -142,9 +145,6 @@ namespace lab2
     public class Catalogue
     {
         HashSet<Artist> artists;
-        HashSet<Album> albums;
-        HashSet<Track> tracks;
-        HashSet<Genre> genres;
 
         public Catalogue()
         {
@@ -157,7 +157,11 @@ namespace lab2
         }
 
         public void AddAlbum(Album album){
-            albums.Add(album);
+            foreach(var artist in this.artists){
+                if(String.Equals(artist.name, album.Artist.name,StringComparison.CurrentCultureIgnoreCase)){
+                    artist.AddAlbum(ref album);
+                }
+            }
         }
 
         public void AddArtist(Artist artist){
