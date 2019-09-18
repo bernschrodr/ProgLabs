@@ -54,20 +54,34 @@ namespace lab2
         public List<CatalogueItem> Search(SearchOptions options)
         {
             List<CatalogueItem> result = new List<CatalogueItem>();
-            List<CatalogueItem> list = new List<CatalogueItem>();
+            List<CatalogueItem> resultByWord = new List<CatalogueItem>();
 
-            if (items.TryGetValue(options.name.GetHashCode(), out list))
+            if (options.name == null)
             {
-                foreach (var item in list)
+                foreach (var list in this.items)
                 {
-                    if (item.Type == options.type)
+                    foreach (var item in list.Value)
                     {
-                        result.Add(item);
+                        
                     }
                 }
             }
+            else
+            {
 
-            return result;
+                if (items.TryGetValue(options.name.GetHashCode(), out resultByWord))
+                {
+                    foreach (var item in resultByWord)
+                    {
+                        if (item.Type == options.type)
+                        {
+                            result.Add(item);
+                        }
+                    }
+                }
+
+                return result;
+            }
         }
     }
 }
