@@ -72,7 +72,7 @@ namespace lab1
                     }
 
                     if(denominator == 0){
-                        continue;
+                        continue;   
                     }
                     set.Add(new RationalFraction(numerator, denominator));
                 }
