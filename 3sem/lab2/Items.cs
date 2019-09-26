@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace lab2
 {
-        public enum CatalogueTypes
+    public enum CatalogueTypes
     {
         artist,
         album,
@@ -14,14 +14,21 @@ namespace lab2
     public class CatalogueItem
     {
         string name;
-        public string Name{
+        public string Name
+        {
             get => name;
             private set => name = value;
         }
         CatalogueTypes type;
-        public CatalogueTypes Type{
+        public CatalogueTypes Type
+        {
             get => type;
             private set => type = value;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.name}";
         }
 
         public CatalogueItem(string name, CatalogueTypes type)
@@ -37,6 +44,10 @@ namespace lab2
     {
         List<Album> albums;
         Genre genre;
+        public Genre Genre
+        {
+            get => genre;
+        }
         public Artist(string name, Genre genre) : base(name, CatalogueTypes.artist)
         {
             albums = new List<Album>();
@@ -70,25 +81,33 @@ namespace lab2
             set => genre = value;
             get => genre;
         }
+        int year;
+        public int Year
+        {
+            get => year;
+            set => year = value;
+        }
 
         Artist artist;
-        public Artist Artist{
-            get=>artist;
+        public Artist Artist
+        {
+            get => artist;
+            set => artist = value;
         }
-        List<Track> tracks;
+        public List<Track> tracks;
 
-        public Album(string name,ref Artist artist, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
+        public Album(string name, ref Artist artist, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.artist = artist;
 
         }
-        public Album(string name, ref Genre genre , ref Artist artist,CatalogueTypes type = CatalogueTypes.album) : base(name, type)
+        public Album(string name, ref Genre genre, ref Artist artist, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;
 
         }
-        public Album(string name, ref Genre genre, ref Artist artist, List<Track> tracks,CatalogueTypes type = CatalogueTypes.album) : base(name, type)
+        public Album(string name, ref Genre genre, ref Artist artist, List<Track> tracks, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;
@@ -100,20 +119,41 @@ namespace lab2
     public class Track : CatalogueItem
     {
         Album album;
+        public Album Album
+        {
+            get => album;
+        }
         Artist artist;
         Genre genre;
 
-        int year;
-
-        public Track(string name, CatalogueTypes type) : base(name, type)
+        public Genre Genre
         {
-            
+            get => genre;
+        }
+
+        int year;
+        public int Year
+        {
+            get => year;
+            private set => year = value;
+        }
+
+        public Track(string name) : base(name, CatalogueTypes.track)
+        {
+
+        }
+
+        public Track(string name, Artist artist, Album album, Genre genre) : base(name, CatalogueTypes.track)
+        {
+            this.artist = artist;
+            this.album = album;
+            this.genre = genre;
         }
     }
 
     public class Genre : CatalogueItem
     {
-        public Genre(string name, CatalogueTypes type) : base(name, type)
+        public Genre(string name) : base(name, CatalogueTypes.genre)
         {
 
         }
@@ -121,7 +161,7 @@ namespace lab2
 
     public class Rock : Genre
     {
-        public Rock(string name = "Rock") : base(name, CatalogueTypes.genre)
+        public Rock(string name = "Rock") : base(name)
         {
 
         }
@@ -137,7 +177,7 @@ namespace lab2
 
     public class Pop : Genre
     {
-        public Pop(string name = "Pop") : base(name, CatalogueTypes.genre)
+        public Pop(string name = "Pop") : base(name)
         {
 
         }
@@ -145,7 +185,7 @@ namespace lab2
 
     public class HipHop : Genre
     {
-        public HipHop(string name = "HipHop") : base(name, CatalogueTypes.genre)
+        public HipHop(string name = "HipHop") : base(name)
         {
 
         }

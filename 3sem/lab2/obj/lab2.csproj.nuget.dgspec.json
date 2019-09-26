@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj": {}
+    "C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj": {}
   },
   "projects": {
-    "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj": {
+    "C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
+        "projectUniqueName": "C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
         "projectName": "lab2",
-        "projectPath": "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
+        "projectPath": "C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
         "packagesPath": "C:\\Users\\berns\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\obj\\",
+        "outputPath": "C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
