@@ -9,3 +9,14 @@ c:\Users\berns\OneDrive\Documents\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.
 c:\Users\berns\OneDrive\Documents\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.AssemblyInfo.cs
 c:\Users\berns\OneDrive\Documents\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.dll
 c:\Users\berns\OneDrive\Documents\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.pdb
+F:\Code\ProgLabs\3sem\lab2\bin\Debug\netcoreapp2.2\lab2.deps.json
+F:\Code\ProgLabs\3sem\lab2\bin\Debug\netcoreapp2.2\lab2.runtimeconfig.json
+F:\Code\ProgLabs\3sem\lab2\bin\Debug\netcoreapp2.2\lab2.runtimeconfig.dev.json
+f:\Code\ProgLabs\3sem\lab2\bin\Debug\netcoreapp2.2\lab2.dll
+f:\Code\ProgLabs\3sem\lab2\bin\Debug\netcoreapp2.2\lab2.pdb
+f:\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.csprojAssemblyReference.cache
+f:\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.csproj.CoreCompileInputs.cache
+f:\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.AssemblyInfoInputs.cache
+f:\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.AssemblyInfo.cs
+f:\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.dll
+f:\Code\ProgLabs\3sem\lab2\obj\Debug\netcoreapp2.2\lab2.pdb

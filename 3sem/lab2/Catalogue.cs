@@ -4,21 +4,6 @@ using System;
 
 namespace lab2
 {
-
-    public class SearchOptions
-    {
-        public int year;
-        public CatalogueTypes type;
-        public Genre genre;
-        public string name;
-        public SearchOptions(string name = null, CatalogueTypes type = CatalogueTypes.all, Genre genre = null, int year = -1)
-        {
-            this.name = name;
-            this.type = type;
-            this.genre = genre;
-            this.year = year;
-        }
-    }
     public class Catalogue
     {
 
@@ -26,11 +11,6 @@ namespace lab2
         Dictionary<int, Album> albums = new Dictionary<int, Album>();
         Dictionary<int, Track> tracks = new Dictionary<int, Track>();
         Dictionary<int, Genre> genres = new Dictionary<int, Genre>();
-
-        public Catalogue()
-        {
-
-        }
 
         public Catalogue(StreamReader sr)
         {
@@ -40,30 +20,33 @@ namespace lab2
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    string[] trackInFile = line.Split(separator, StringSplitOptions.None);
-                    for (var i = 0; i < trackInFile.Length; i++)
+                    string[] infoFromFile = line.Split(separator, StringSplitOptions.None);
+                    for (var i = 0; i < infoFromFile.Length; i++)
                     {
-                        trackInFile[i] = trackInFile[i].Trim(' ');
+                        infoFromFile[i] = infoFromFile[i].Trim(' ');
                     }
-                    if (trackInFile.Length < 3 || trackInFile[0] == "" || trackInFile[2] == "")
+                    if (infoFromFile.Length < 3 || infoFromFile[0] == "" || infoFromFile[2] == "")
                     {
                         continue;
                     }
 
                     Genre outGenre = new Genre("none");
-                    if (trackInFile[3] != "" && !this.genres.TryGetValue(trackInFile[3].GetHashCode(), out outGenre))
+                    if (infoFromFile[3] != "" && !this.genres.TryGetValue(infoFromFile[3].GetHashCode(), out outGenre))
                     {
-                        this.genres.Add(trackInFile[3].GetHashCode(), (outGenre = new Genre(trackInFile[3])));
+                        
+                        this.genres.Add(infoFromFile[3].GetHashCode(), outGenre);
                     }
 
-                    Artist artist = new Artist(trackInFile[0], outGenre);
-                    if (trackInFile[2] == "")
+                    Artist artist = new Artist(infoFromFile[0], outGenre);
+                    if (infoFromFile[1] == "")
                     {
-                        trackInFile[2] = trackInFile[3];
+                        infoFromFile[1] = infoFromFile[2];
                     }
-                    Album album = new Album(trackInFile[2], ref artist);
+                    Album album = new Album(infoFromFile[1], ref artist);
                     artist.AddAlbum(ref album);
-                    Track track = new Track(trackInFile[3], artist, album, outGenre);
+                    int year;
+                    Int32.TryParse(infoFromFile[4], out year);
+                    Track track = new Track(infoFromFile[2], artist, album, outGenre,year);
                     AddTrack(track);
                 }
             }
@@ -74,68 +57,68 @@ namespace lab2
             }
         }
 
-        public bool AddTrack(Track track)
+        public void AddTrack(Track track)
         {
-            Track outTrack;
-            if (!this.tracks.TryGetValue(track.GetHashCode(), out outTrack))
+            if (track.Album == null || track.Artist == null || track.Genre == null)
+            {
+                Console.WriteLine("Bad track metainfo \nnot aded");
+                return;
+            }
+            if (!this.tracks.TryGetValue(track.GetHashCode(), out var outTrack))
             {
                 AddAlbum(track.Album);
-                Album outAlbum;
-                if (this.albums.TryGetValue(track.Album.GetHashCode(), out outAlbum))
+                outTrack = track;
+                if (this.albums.TryGetValue(track.Album.GetHashCode(), out var outAlbum))
                 {
                     outAlbum.tracks.Add(track);
                 }
                 this.tracks.Add(track.GetHashCode(), outTrack);
-                return true;
 
             }
             else
             {
-                return false;
+                Console.WriteLine("track already in catalogue");
             }
         }
 
-        public bool AddAlbum(Album album)
+        private void AddAlbum(Album album)
         {
 
 
-            if (AddArtist(album.Artist))
+            AddArtist(album.Artist);
+            Album outAlbum;
+            if (this.albums.TryGetValue(album.GetHashCode(), out outAlbum))
             {
-                Album outAlbum;
-                if (this.albums.TryGetValue(album.GetHashCode(), out outAlbum))
-                {
-                    return false;
-                }
-                this.albums.Add(album.GetHashCode(), album);
-                return true;
+                return;
             }
             else
             {
                 Artist outArtist;
-                if (!this.artists.TryGetValue(album.Artist.GetHashCode(), out outArtist))
+                if (this.artists.TryGetValue(album.Artist.GetHashCode(), out outArtist))
+                {
+
+                    album.Artist = outArtist;
+                    outArtist.AddAlbum(ref album);
+                }
+                else
                 {
                     System.Console.WriteLine("artist not found");
-                    return false;
                 }
-                album.Artist = outArtist;
-                outArtist.AddAlbum(ref album);
                 this.albums.Add(album.GetHashCode(), album);
-                return true;
+
             }
+
+
+
 
         }
 
-        public bool AddArtist(Artist artist)
+        private void AddArtist(Artist artist)
         {
             Artist outArtist;
             if (!this.artists.TryGetValue(artist.GetHashCode(), out outArtist))
             {
                 this.artists.Add(artist.GetHashCode(), artist);
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
@@ -143,49 +126,83 @@ namespace lab2
         public void Search(SearchOptions options)
         {
             List<CatalogueItem> result = new List<CatalogueItem>();
-            Artist artistsResultByWord;
-            Album albumsResultByWord;
-            Track tracksResultByWord;
             Genre genre = options.genre;
             int year = options.year;
             string name = options.name;
 
-
-            if (options.type == CatalogueTypes.artist || options.type == CatalogueTypes.all)
+            if (name != null)
             {
-                if (artists.TryGetValue(name.GetHashCode(), out artistsResultByWord))
+                if (options.type == CatalogueTypes.artist || options.type == CatalogueTypes.all)
                 {
-                    System.Console.WriteLine(artistsResultByWord);
-                }
-            }
-
-            if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.all)
-            {
-                if (albums.TryGetValue(name.GetHashCode(), out albumsResultByWord))
-                {
-                    if (genre != null && albumsResultByWord.Genre == genre && year != -1
-                    && albumsResultByWord.Year == year)
+                    if (artists.TryGetValue(name.ToLower().GetHashCode(), out var artistsResultByWord))
                     {
-                        System.Console.WriteLine(albumsResultByWord);
+                        System.Console.WriteLine(artistsResultByWord);
+                    }
+                }
+
+                if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.all)
+                {
+                    if (albums.TryGetValue(name.ToLower().GetHashCode(), out var albumsResultByWord))
+                    {
+                        if ((genre == null || albumsResultByWord.Genre == genre) &&
+                        (year == -1 || albumsResultByWord.Year == year))
+                        {
+                            System.Console.WriteLine(albumsResultByWord);
+                        }
+                    }
+                }
+
+                if (options.type == CatalogueTypes.track || options.type == CatalogueTypes.all)
+                {
+                    if (tracks.TryGetValue(name.ToLower().GetHashCode(), out var tracksResultByWord))
+                    {
+                        if ((genre == null || tracksResultByWord.Genre.GetType() == genre.GetType()
+                        || genre.GetType().IsSubclassOf(tracksResultByWord.Genre.GetType())) &&
+                        (year == -1 || tracksResultByWord.Year == year))
+                        {
+                            System.Console.WriteLine(tracksResultByWord);
+                        }
+
                     }
                 }
             }
-
-            if (options.type == CatalogueTypes.track || options.type == CatalogueTypes.all)
+            else
             {
-                if (tracks.TryGetValue(name.GetHashCode(), out tracksResultByWord))
+                if (options.type == CatalogueTypes.artist || options.type == CatalogueTypes.all)
                 {
-                    if (genre != null && tracksResultByWord.Genre == genre && year != -1 && tracksResultByWord.Year == year)
-                    {
-                        System.Console.WriteLine(tracksResultByWord);
+                    foreach (var artist in artists){
+                        if ((genre == null || artist.Value.Genre == genre)){
+                            Console.WriteLine(artist.Value);
+                        }
                     }
+                }
 
+                if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.all)
+                {
+                    foreach (var album in albums){
+                        if ((genre == null || album.Value.Genre.GetType() == genre.GetType()
+                        || genre.GetType().IsSubclassOf(album.Value.Genre.GetType())) 
+                        && (year == -1 || album.Value.Year == year) ){
+                            Console.WriteLine(album.Value);
+                        }
+                }
+
+                if (options.type == CatalogueTypes.track || options.type == CatalogueTypes.all)
+                {
+                    foreach (var track in tracks){
+                        Console.WriteLine(genre.GetType().IsSubclassOf(track.Value.Genre.GetType()));
+                        if ((genre == null || track.Value.Genre.GetType() == genre.GetType()
+                        || track.Value.Genre.GetType().IsAssignableFrom (genre.GetType())) &&
+                        (year == -1 || track.Value.Year == year))
+                        {
+                            System.Console.WriteLine(track.Value);
+                        }
+                    }
+                    
                 }
             }
 
         }
-
-
     }
 }
-
+}

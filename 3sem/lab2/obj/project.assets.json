@@ -692,22 +692,24 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
+      "projectUniqueName": "F:\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
       "projectName": "lab2",
-      "projectPath": "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
+      "projectPath": "F:\\Code\\ProgLabs\\3sem\\lab2\\lab2.csproj",
       "packagesPath": "C:\\Users\\berns\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab2\\obj\\",
+      "outputPath": "F:\\Code\\ProgLabs\\3sem\\lab2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\berns\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\berns\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
