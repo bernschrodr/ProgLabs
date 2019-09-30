@@ -12,9 +12,9 @@ namespace lab2
         {
             get => artist;
         }
-        Genre genre;
+        string genre;
 
-        public Genre Genre
+        public string Genre
         {
             get => genre;
         }
@@ -31,14 +31,14 @@ namespace lab2
 
         }
 
-        public Track(string name, Artist artist, Album album, Genre genre) : base(name, CatalogueTypes.track)
+        public Track(string name, Artist artist, Album album, string genre) : base(name, CatalogueTypes.track)
         {
             this.artist = artist;
             this.album = album;
             this.genre = genre;
         }
 
-        public Track(string name, Artist artist, Album album, Genre genre, int year) : base(name, CatalogueTypes.track)
+        public Track(string name, Artist artist, Album album, string    genre, int year) : base(name, CatalogueTypes.track)
         {
             this.artist = artist;
             this.album = album;

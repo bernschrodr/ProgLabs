@@ -4,8 +4,8 @@ namespace lab2
 {
     public class Album : CatalogueItem
     {
-        Genre genre;
-        public Genre Genre
+        string genre;
+        public string Genre
         {
             set => genre = value;
             get => genre;
@@ -30,20 +30,20 @@ namespace lab2
             this.artist = artist;
 
         }
-        public Album(string name, ref Genre genre, ref Artist artist, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
+        public Album(string name, string genre, ref Artist artist, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;
 
         }
-        public Album(string name, ref Genre genre, ref Artist artist, List<Track> tracks, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
+        public Album(string name, string genre, ref Artist artist, List<Track> tracks, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;
             this.tracks = tracks;
         }
 
-        public Album(string name, ref Genre genre, ref Artist artist, int year, List<Track> tracks, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
+        public Album(string name, string genre, ref Artist artist, int year, List<Track> tracks, CatalogueTypes type = CatalogueTypes.album) : base(name, type)
         {
             this.genre = genre;
             this.artist = artist;

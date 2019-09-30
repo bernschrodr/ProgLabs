@@ -10,14 +10,16 @@ namespace lab2
             Console.WriteLine("Hello World!");
             try
             {
-                StreamReader sr = new StreamReader("input.txt");
-                Catalogue catalog = new Catalogue(sr);
+                StreamReader tracksFile = new StreamReader("input.txt");
+                StreamReader genresFile = new StreamReader("genres.txt");
+                Catalogue catalog = new Catalogue(tracksFile, genresFile);
+                catalog.Search(new SearchOptions(type: CatalogueTypes.album));
                 catalog.Search(new SearchOptions("STARGAZING"));
                 catalog.Search(new SearchOptions("Believer"));
                 catalog.Search(new SearchOptions("imagine dragons"));
-                catalog.Search(new SearchOptions(name: "Believer",genre: new Rock()));
-                catalog.Search(new SearchOptions("sda"));
-                catalog.Search(new SearchOptions(genre: new Rock()));
+                catalog.Search(new SearchOptions(name: "Believer",genre: "Rock"));
+                catalog.Search(new SearchOptions(year: 2017));
+                catalog.Search(new SearchOptions(name: "hip hop", type: CatalogueTypes.genre));
             }
             catch (System.Exception e)
             {

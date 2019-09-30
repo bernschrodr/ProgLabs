@@ -5,12 +5,12 @@ namespace lab2
     public class Artist : CatalogueItem
     {
         List<Album> albums;
-        Genre genre;
-        public Genre Genre
+        string genre;
+        public string Genre
         {
             get => genre;
         }
-        public Artist(string name, Genre genre) : base(name, CatalogueTypes.artist)
+        public Artist(string name, string genre) : base(name, CatalogueTypes.artist)
         {
             albums = new List<Album>();
             this.genre = genre;

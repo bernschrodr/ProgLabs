@@ -4,9 +4,9 @@ namespace lab2
     {
         public int year;
         public CatalogueTypes type;
-        public Genre genre;
+        public string genre;
         public string name;
-        public SearchOptions(string name = null, CatalogueTypes type = CatalogueTypes.all, Genre genre = null, int year = -1)
+        public SearchOptions(string name = null, CatalogueTypes type = CatalogueTypes.all, string genre = null, int year = -1)
         {
             this.name = name;
             this.type = type;
