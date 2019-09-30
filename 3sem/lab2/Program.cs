@@ -14,7 +14,7 @@ namespace lab2
                 StreamReader genresFile = new StreamReader("genres.txt");
                 Catalogue catalog = new Catalogue(tracksFile, genresFile);
                 catalog.Search(new SearchOptions(type: CatalogueTypes.album));
-                catalog.Search(new SearchOptions("STARGAZING"));
+                catalog.Search(new SearchOptions("ASTROWORLD"));
                 catalog.Search(new SearchOptions("Believer"));
                 catalog.Search(new SearchOptions("imagine dragons"));
                 catalog.Search(new SearchOptions(name: "Believer",genre: "Rock"));

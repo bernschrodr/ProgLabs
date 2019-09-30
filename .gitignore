@@ -1,2 +1,3 @@
-3sem/lab1/obj/*
-3sem/lab2/bin/*
+
+**/bin/
+**/obj/

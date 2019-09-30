@@ -3,6 +3,7 @@ namespace lab2{
     {
         artist,
         album,
+        compilation,
         track,
         genre,
         all
@@ -20,7 +21,7 @@ namespace lab2{
         public CatalogueTypes Type
         {
             get => type;
-            private set => type = value;
+            set => type = value;
         }
 
         public override string ToString()

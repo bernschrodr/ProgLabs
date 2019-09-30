@@ -34,12 +34,31 @@ namespace lab2
 
                     string genre = infoFromFile[3] == "" ? "none" : infoFromFile[3];
                     Artist artist = new Artist(infoFromFile[0], genre);
+                    Album album;
                     if (infoFromFile[1] == "")
                     {
                         infoFromFile[1] = infoFromFile[2];
                     }
-                    Album album = new Album(infoFromFile[1], ref artist);
-                    artist.AddAlbum(ref album);
+                    if (albums.TryGetValue(infoFromFile[1].ToLower().GetHashCode(), out var outAlbum))
+                    {
+                        if (outAlbum.Artist.Name.ToLower() != infoFromFile[0] ||
+                         outAlbum.Artist.Name.ToLower() == "various artists")
+                        {
+                            artist.AddAlbum(ref outAlbum);
+                            if (outAlbum.Artist.Name != "various artists")
+                            {
+                                outAlbum.Type = CatalogueTypes.compilation;
+                                outAlbum.Artist = new Artist("various artists");
+                            }
+                        }
+                        album = outAlbum;
+                    }
+                    else
+                    {
+                        album = new Album(infoFromFile[1], ref artist);
+                        artist.AddAlbum(ref album);
+                    }
+
                     int year;
                     Int32.TryParse(infoFromFile[4], out year);
                     Track track = new Track(infoFromFile[2], artist, album, genre, year);
@@ -142,7 +161,8 @@ namespace lab2
                     }
                 }
 
-                if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.all)
+                if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.compilation ||
+                 options.type == CatalogueTypes.all)
                 {
                     if (albums.TryGetValue(name.ToLower().GetHashCode(), out var albumsResultByWord))
                     {
@@ -150,7 +170,10 @@ namespace lab2
                         || genres.IsSubgenre(genre, albumsResultByWord.Genre)) &&
                         (year == -1 || albumsResultByWord.Year == year))
                         {
-                            System.Console.WriteLine(albumsResultByWord);
+                            if (options.type == albumsResultByWord.Type || options.type != CatalogueTypes.compilation)
+                            { 
+                                System.Console.WriteLine(albumsResultByWord); 
+                            }
                         }
                     }
                 }
@@ -183,7 +206,8 @@ namespace lab2
                     }
                 }
 
-                if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.all)
+                if (options.type == CatalogueTypes.album || options.type == CatalogueTypes.compilation ||
+                 options.type == CatalogueTypes.all)
                 {
                     foreach (var album in albums)
                     {
@@ -191,7 +215,10 @@ namespace lab2
                         || genres.IsSubgenre(genre, album.Value.Genre))
                         && (year == -1 || album.Value.Year == year))
                         {
-                            Console.WriteLine(album.Value);
+                            if (options.type == album.Value.Type || options.type != CatalogueTypes.compilation)
+                            { 
+                                System.Console.WriteLine(album.Value); 
+                            }
                         }
                     }
 
