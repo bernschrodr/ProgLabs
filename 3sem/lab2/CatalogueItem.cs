@@ -10,7 +10,7 @@ namespace lab2{
     }
 
     public class CatalogueItem
-    {
+        {
         string name;
         public string Name
         {

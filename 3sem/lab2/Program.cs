@@ -14,11 +14,20 @@ namespace lab2
                 StreamReader genresFile = new StreamReader("genres.txt");
                 Catalogue catalog = new Catalogue(tracksFile, genresFile);
                 catalog.Search(new SearchOptions(type: CatalogueTypes.album));
+                Console.WriteLine();
+
+                catalog.Search(new SearchOptions(type: CatalogueTypes.compilation));
+                Console.WriteLine();
+
                 catalog.Search(new SearchOptions("ASTROWORLD"));
                 catalog.Search(new SearchOptions("Believer"));
                 catalog.Search(new SearchOptions("imagine dragons"));
+                Console.WriteLine();
+
                 catalog.Search(new SearchOptions(name: "Believer",genre: "Rock"));
                 catalog.Search(new SearchOptions(year: 2017));
+                Console.WriteLine();
+                
                 catalog.Search(new SearchOptions(name: "hip hop", type: CatalogueTypes.genre));
             }
             catch (System.Exception e)
