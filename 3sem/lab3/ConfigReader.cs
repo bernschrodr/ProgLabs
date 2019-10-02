@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace lab3
 {
@@ -90,7 +91,8 @@ namespace lab3
             {
                 if (configsOut.TryGetValue(configName, out parametrOut))
                 {
-                    if (Int32.TryParse(parametrOut, out outInt)){
+                    if (Int32.TryParse(parametrOut, NumberStyles.Number,
+                    new CultureInfo("en-US"), out outInt)){
                         return outInt;
                     }
                 }
@@ -107,9 +109,10 @@ namespace lab3
             {
                 if (configsOut.TryGetValue(configName, out parametrOut))
                 {
-                    if (Double.TryParse(parametrOut, out outDouble)){
+                    if (Double.TryParse(parametrOut, NumberStyles.Float,
+                    new CultureInfo("en-US"), out outDouble)){
                         return outDouble;
-                    }
+                    }   
                 }
             }
             throw new Exception("Can not be parsed");
