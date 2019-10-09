@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ConsoleApp1
 {
     public class Product
@@ -7,7 +9,7 @@ namespace ConsoleApp1
         public double Price { get; set; }
         public int Count { get; set; }
 
-        public int ShopId { get; set; }
-        public Shop Shop { get; set; }
+        public List<int> ShopId { get; set; } = new List<int>();
+        public List<Shop> Shop { get; } = new List<Shop>();
     }
 }

@@ -8,5 +8,10 @@ namespace ConsoleApp1
         public string Name { get; set; }
         List<Product> Products {get;} = new List<Product>();
         
+        public Shop(int ShopId, string Name)
+        {
+            this.ShopId = ShopId;
+            this.Name = Name;
+        }
     }
 }
