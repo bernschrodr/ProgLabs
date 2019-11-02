@@ -14,7 +14,7 @@ namespace lab3
             try
             {
                 //Console.WriteLine(cf.GetIntConfig("ADC_DEV", "SampleRate"));
-                Console.WriteLine(cf.GetIntConfig("NCMD", "SampleRate"));
+                Console.WriteLine(cf.GetIntConfig("ABCD_DEV", "BufferLenSeconds"));
                 Console.WriteLine(cf.GetDoubleConfig("NCMD", "SampleRate"));
                 Console.WriteLine(cf.GetStringConfig("NCMD", "SampleRate"));
             }

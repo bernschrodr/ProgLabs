@@ -87,7 +87,7 @@ namespace lab3
             Dictionary<string, string> configsOut;
             string parametrOut;
             int outInt;
-            if (configs.TryGetValue(section, out configsOut))
+            if (configs.TryGetValue(section, out configsOut))   
             {
                 if (configsOut.TryGetValue(configName, out parametrOut))
                 {

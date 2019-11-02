@@ -1,15 +1,51 @@
+using System;
 using System.Collections.Generic;
+
+
 
 namespace ConsoleApp1
 {
-    public class Product
+    public class Product : IComparable 
     {
-        public int ProductId { get; set; }
+
+        public int Id { get; set; } 
         public string Name { get; set; }
         public double Price { get; set; }
         public int Count { get; set; }
 
-        public List<int> ShopId { get; set; } = new List<int>();
-        public List<Shop> Shop { get; } = new List<Shop>();
+
+        public int ShopId { get; set; }
+        public Shop Shop { get; set; } = new Shop();
+
+        public Product() { }
+        public Product(string name, double price, int count)
+        {
+            Name = name;
+            Price = price;
+            Count = count;
+        }
+        public int CompareTo(object comparing) {
+            Product comp = comparing as Product;
+            if(comp == null)
+            {
+                throw new Exception("Невозможно сравнить");
+            }
+            if(this.Price < comp.Price)
+            {
+                return -1;
+            }
+            if(this.Price > comp.Price)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

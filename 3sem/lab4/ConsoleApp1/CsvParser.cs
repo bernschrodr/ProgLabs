@@ -2,64 +2,86 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ConsoleApp1
 {
-    class CsvParser
+    static public class CsvParser
     {
-        Dictionary<int, Shop> ParseShops(StreamReader pathCsv)
+        static public Dictionary<int, Shop> ParseShops(StreamReader pathCsv)
         {
             Dictionary<int, Shop> shops = new Dictionary<int, Shop>();
             string line;
             while ((line = pathCsv.ReadLine()) != null)
             {
                 string[] columns = line.Split(',');
+                string id = columns[0];
+                string name = columns[1];
                 if (columns.Length != 2)
                 {
                     Console.WriteLine("Bad csv Products file");
                     continue;
                 }
-                int shopId;
-                string name = columns[1];
-                if(int.TryParse(columns[0], out shopId))
+
+                if (int.TryParse(id, out var shopId))
                 {
 
                 }
-                Shop shop = new Shop(shopId, columns[1]);
+                Shop shop = new Shop(shopId, name);
                 shops.Add(shopId, shop);
             }
             return shops;
+        }
 
-        List<Product> ParseProducts(StreamReader pathCsv, Dictionary<int, Shop> shops)
+        static public List<Product> ParseProducts(StreamReader pathCsv, Dictionary<int, Shop> shops)
         {
             string line;
-            List<Product> csvDatas = new List<Product>();
+            List<Product> products = new List<Product>();
             while ((line = pathCsv.ReadLine()) != null)
             {
-                
+
                 string[] columns = line.Split(',');
-                if ((columns.Length - 2) % 3 != 0)
+                if ((columns.Length - 1) % 3 != 0)
                 {
-                    Console.WriteLine("Bad csv Products file");
+                    Console.WriteLine("Bad csv Products line");
                     continue;
                 }
-                Product data = new Product();
-                
-                data.type = columns[0];
-                data.name = columns[1];
-                            
-                for(var i = 2; i < columns.Length; i+=3)
+                for (var i = 1; i < columns.Length; i += 3)
                 {
-                    WhereSell innerData = new WhereSell();
-                    innerData.shopId = columns[i];
-                    innerData.count = columns[i + 1];
-                    innerData.cost = columns[i + 2];
-                    data.whereSell.Add(innerData);
+                    Product product = new Product
+                    {
+                        Name = columns[0]
+                    };
+                    
+                   if (Int32.TryParse(columns[i], NumberStyles.Number,
+                    new CultureInfo("en-US"), out int shopId) &&
+                        Int32.TryParse(columns[i + 1], NumberStyles.Number,
+                    new CultureInfo("en-US"), out int count) &&
+                        Double.TryParse(columns[i + 2], NumberStyles.Number,
+                    new CultureInfo("en-US"), out double price))
+                    {
+                        product.ShopId = shopId;
+                        product.Count = count;
+                        product.Price = price;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    if (shops.TryGetValue(shopId, out var outShop))
+                    {
+                        product.Shop = outShop;
+                        outShop.Products.Add(product);
+                    }
+                    products.Add(product);
                 }
-                csvDatas.Add(data);
+                
             }
-            return csvDatas;
+            return products;
 
         }
+
+
     }
+
 }

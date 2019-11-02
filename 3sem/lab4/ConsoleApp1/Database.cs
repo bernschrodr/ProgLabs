@@ -7,7 +7,7 @@ namespace ConsoleApp1
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Product> Products { get; set; }
 
-        public Database():base("DbConnection")
+        public Database():base("DbProductShop")
         {
 
         }
