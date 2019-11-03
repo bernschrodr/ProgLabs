@@ -65,8 +65,10 @@ namespace ConsoleApp1
         {
             foreach (var shop in shops)
             {
-                var product = new Product(name, price, count);
-                product.Shop = shop;
+                var product = new Product(name, price, count)
+                {
+                    Shop = shop
+                };
                 DB.Products.Add(product);
             }
             DB.SaveChanges();
@@ -81,69 +83,80 @@ namespace ConsoleApp1
             DB.SaveChanges();
         }
 
-        public Shop FindLowestPrice(Dictionary<string, int> products)
+        public Shop FindLowestPriceShop(Dictionary<string, int> products)
         {
-            var allProducts = DB.Products.ToList();
-            Dictionary<string, List<Product>> shopsList = new Dictionary<string, List<Product>>();
+            Dictionary<string, List<Product>> productsByName = new Dictionary<string, List<Product>>();
             foreach (var product in products)
             {
 
-                var matchedProduct = DB.Products.Include(prod => prod.Shop)
+                var matchedProduct = DB.Products.Include("Shop")
                     .Where(prod => prod.Name == product.Key)
                     .Where(prod => prod.Count >= product.Value).ToList();
 
-                foreach(var p in matchedProduct)
-                {
-                    DB.Entry(p).Reference(f => f.Shop).Load();
-                }
-
-                if (matchedProduct != null)
+                if (matchedProduct != null && matchedProduct.Count > 0)
                 {
                     matchedProduct.Sort();
-                    shopsList.Add(product.Key, matchedProduct);
+                    productsByName.Add(product.Key, matchedProduct);
                 }
-            }
-
-            /*double minPrice = Double.MaxValue;
-            Shop lowestPriceShop = null;
-            foreach (var shop in shopsList)
-            {
-                bool flag = true;
-                double price = 0;
-                foreach (var prod in allProducts)
+                else
                 {
+                    throw new Exception("Не хватает/нет товаров");
+                }
+            }
+
+            Dictionary<Shop, double> resultShopList = new Dictionary<Shop, double>();
+            Dictionary<int, List<Product>> productsByShopId = new Dictionary<int, List<Product>>();
+            foreach (var list in productsByName)
+            {
+                foreach (var innerListItem in list.Value)
+                {
+
+                    if (productsByShopId.TryGetValue(innerListItem.ShopId, out var prod))
                     {
-                        if (products.TryGetValue(prod.Id, out int count))
+                        prod.Add(innerListItem);
+                    }
+                    else
+                    {
+                        List<Product> newList = new List<Product>
                         {
-                            try
-                            {
-                                price += BuyProduct(prod.Name, count);
-                                if (price > 0 && flag)
-                                {
+                            innerListItem
+                        };
+                        productsByShopId.Add(innerListItem.ShopId, newList);
 
-                                }
-                                else
-                                {
-                                    flag = false;
-                                    continue;
-                                }
-                            }
-                            catch { }
-
-                        }
                     }
-                    if (price < minPrice)
-                    {
-                        minPrice = price;
-                        lowestPriceShop = shop;
-                    }
-
 
                 }
 
             }
-            return lowestPriceShop ?? null;*/
-            return null;
+
+            foreach (var list in productsByShopId)
+            {
+                double sum = 0;
+                foreach (var innerListItem in list.Value)
+                {
+                    if (products.TryGetValue(innerListItem.Name, out int count))
+                    {
+                        sum += count * innerListItem.Price;
+                    }
+                }
+                resultShopList.Add(list.Value[0].Shop, sum);
+            }
+
+            (Shop shop, double sum) min = (null, Double.MaxValue);
+            foreach (var shop in resultShopList)
+            {
+                if (min.sum > shop.Value)
+                {
+                    min.sum = shop.Value;
+                    min.shop = shop.Key;
+                }
+            }
+
+            return min.shop == null
+                 ? throw new Exception("Ни в одном магазине не продается данный набор")
+                 : min.shop;
+
+
         }
 
         public Dictionary<int, Product> GetHowMuchCanBuy(int shopId, double money)
@@ -241,9 +254,7 @@ namespace ConsoleApp1
         public Shop FindLowestPriceShop(string name)
         {
             var result = GetSortedProductList(name)[0];
-            return result != null
-                 ? result.Shop
-                 : null;
+            return result?.Shop;
         }
 
         public List<Product> GetSortedProductList(string name)

@@ -15,7 +15,7 @@ namespace ConsoleApp1
 
 
         public int ShopId { get; set; }
-        public Shop Shop { get; set; } = new Shop();
+        public Shop Shop { get; set; }
 
         public Product() { }
         public Product(string name, double price, int count)

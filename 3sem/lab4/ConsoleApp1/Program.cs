@@ -14,24 +14,21 @@ namespace ConsoleApp1
             DAO dao = new DAO();
             dao.CreateShop(100, "Перекресток");
             //dao.CreateProduct("Молоко Домик в Деревне", 72, 185, 100);
-            Console.WriteLine( dao.BuyProduct("Молоко Домик в Деревне", 15));
-            var howMuch = dao.GetHowMuchCanBuy(1,5000);
-            Dictionary<string, int> buyList = new Dictionary<string, int>();
-            buyList.Add("Молоко Домик в Деревне", 3);
-            var temp = dao.FindLowestPrice(buyList);
+            //dao.CreateProduct("Телевизор PHILIPS", 22000, 5, 1);
+            //dao.CreateProduct("Телевизор PHILIPS", 23000, 5, 100);
+            Console.WriteLine(dao.BuyProduct("Молоко Домик в Деревне", 15));
+            var howMuch = dao.GetHowMuchCanBuy(1, 5000);
+            Dictionary<string, int> buyList = new Dictionary<string, int>
+            {
+                { "Шоколад ‘Аленка’", 3 },
+                { "Телевизор PHILIPS", 2 },
+                {"Шоколад 'Alpen Gold'", 2}
+            };
 
+            var lowestPriceShop = dao.FindLowestPriceShop(buyList);
 
             shopsFile.Close();
             productsFile.Close();
-
-/*
-
-            var shops = db.shops;
-            console.writeline("shops: ");
-            foreach (Shop shop in shops)
-            {
-                console.writeline(shop.name);
-            }*/
         }
     }
 }
