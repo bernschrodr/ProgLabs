@@ -1,13 +1,13 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Globalization;
+
 
 namespace lab3
 {
     public class ConfigReader
     {
-        Dictionary<string, Dictionary<string, string>> configs = new Dictionary<string, Dictionary<string, string>>();
+        Dictionary<string, Section> configs = new Dictionary<string, Section>();
 
         public ConfigReader(StreamReader configFile)
         {
@@ -33,13 +33,12 @@ namespace lab3
                     else
                     {
                         sectionCorrect = true;
-                        configs.Add(section[0], new Dictionary<string, string>());
+                        configs.Add(section[0], new Section(section[0]));
                         continue;
                     }
                 }
 
                 string[] config;
-                Dictionary<string, string> configsOut;
                 if (sectionCorrect)
                 {
                     indexBufer = line.IndexOf(';');
@@ -59,7 +58,7 @@ namespace lab3
                     }
                     else
                     {
-                        if (configs.TryGetValue(section[0], out configsOut))
+                        if (configs.TryGetValue(section[0], out Section configsOut))
                         {
                             configsOut.Add(config[0], config[1]);
                         }
@@ -68,55 +67,16 @@ namespace lab3
             }
         }
 
-        public string GetStringConfig(string section, string configName)
-        {
-            Dictionary<string, string> configsOut;
-            string parametrOut;
-            if (configs.TryGetValue(section, out configsOut))
-            {
-                if (configsOut.TryGetValue(configName, out parametrOut))
-                {
-                    return parametrOut;
-                }
+        public Section GetSection(string name){
+            if(configs.TryGetValue(name,out Section section)){
+                return section;
             }
-            return "Not Found";
+            else{
+                throw new NotFoundException("Section Not Found");
+            }
         }
 
-        public int GetIntConfig(string section, string configName)
-        {
-            Dictionary<string, string> configsOut;
-            string parametrOut;
-            int outInt;
-            if (configs.TryGetValue(section, out configsOut))   
-            {
-                if (configsOut.TryGetValue(configName, out parametrOut))
-                {
-                    if (Int32.TryParse(parametrOut, NumberStyles.Number,
-                    new CultureInfo("en-US"), out outInt)){
-                        return outInt;
-                    }
-                }
-            }
-            throw new Exception("Can not be parsed");
-        }
 
-        public double GetDoubleConfig(string section, string configName)
-        {
-            Dictionary<string, string> configsOut;
-            string parametrOut;
-            Double outDouble;
-            if (configs.TryGetValue(section, out configsOut))
-            {
-                if (configsOut.TryGetValue(configName, out parametrOut))
-                {
-                    if (Double.TryParse(parametrOut, NumberStyles.Float,
-                    new CultureInfo("en-US"), out outDouble)){
-                        return outDouble;
-                    }   
-                }
-            }
-            throw new Exception("Can not be parsed");
-        }
 
     }
 }

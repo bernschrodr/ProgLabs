@@ -7,21 +7,30 @@ namespace lab3
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             StreamReader configFile = new StreamReader("config.ini");
             ConfigReader cf = new ConfigReader(configFile);
-            Console.WriteLine(cf.GetStringConfig("ADC_DEV", "SampleRate"));
+            Console.WriteLine(cf.GetSection("ADC_DEV").GetStringConfig("SampleRate"));
             try
             {
-                //Console.WriteLine(cf.GetIntConfig("ADC_DEV", "SampleRate"));
-                Console.WriteLine(cf.GetIntConfig("ABCD_DEV", "BufferLenSeconds"));
-                Console.WriteLine(cf.GetDoubleConfig("NCMD", "SampleRate"));
-                Console.WriteLine(cf.GetStringConfig("NCMD", "SampleRate"));
+                Console.WriteLine(cf.GetSection("ADC_DEV").GetIntConfig("SampleRate"));
             }
-            catch (Exception e)
+            catch (NotParsedException e)
             {
                 Console.WriteLine(e.Message);
             }
+            try
+            {
+                Console.WriteLine(cf.GetSection("ABCD_DEV").GetIntConfig("BufferLenSeconds"));
+            }
+            catch (NotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+            Console.WriteLine(cf.GetSection("NCMD").GetDoubleConfig("SampleRate"));
+            Console.WriteLine(cf.GetSection("NCMD").GetStringConfig("SampleRate"));
+            Console.WriteLine(cf.GetSection("NCMD").GetIntConfig("SampleRate"));
+            
         }
     }
 }
