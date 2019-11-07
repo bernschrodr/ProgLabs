@@ -11,7 +11,7 @@ namespace ConsoleApp1
             StreamReader shopsFile = new StreamReader("shops.csv");
             StreamReader productsFile = new StreamReader("products.csv");
             //DAO dao = new DAO(shopsFile, productsFile);
-            DAO dao = new DAO();
+            DatabaseWorker dao = new DatabaseWorker();
             dao.CreateShop(100, "Перекресток");
             //dao.CreateProduct("Молоко Домик в Деревне", 72, 185, 100);
             //dao.CreateProduct("Телевизор PHILIPS", 22000, 5, 1);
