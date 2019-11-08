@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ConsoleApp1.Tests
 {
@@ -20,7 +18,7 @@ namespace ConsoleApp1.Tests
             Dictionary<string, int> secondBuyList = new Dictionary<string, int>
                         {
                             { "Шоколад ‘Аленка’", 3 },
-                            { "Телевизор PHILIPS", 1 },
+                            { "Телевизор PdPS", 1 },
                         };
             data.CreateProduct("dd", 12, 23, 1);
             data.BuyListProduct(buyList);

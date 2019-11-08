@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using ConsoleApp1.Exceptions;
 
 namespace ConsoleApp1
 {
@@ -29,7 +29,7 @@ namespace ConsoleApp1
             }
             else
             {
-                throw new Exception("Магазина с таким id не существует");
+                throw new ShopNotFoundException();
             }
             Products.Add(product);
         }
@@ -117,8 +117,16 @@ namespace ConsoleApp1
 
         public Shop FindLowestPriceShop(string name)
         {
-            var result = GetSortedProductList(name)[0];
-            return result?.Shop;
+            try
+            {
+                Product product = GetSortedProductList(name)[0];
+                return product.Shop;
+            }
+            catch (ProductNotFoundException e)
+            {
+                throw e;
+            }
+
         }
 
         public Dictionary<int, Product> GetHowMuchCanBuy(int shopId, double money)
@@ -158,7 +166,7 @@ namespace ConsoleApp1
 
             return products.Count() > 0
                  ? products
-                 : null;
+                 : throw new ProductNotFoundException();
         }
 
         public void RestockProducts(List<Product> products)

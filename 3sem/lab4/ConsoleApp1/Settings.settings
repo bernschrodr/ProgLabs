@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="WorkerType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DB</Value>
+      <Value Profile="(Default)">CSV</Value>
     </Setting>
     <Setting Name="ProductsPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">products.csv</Value>

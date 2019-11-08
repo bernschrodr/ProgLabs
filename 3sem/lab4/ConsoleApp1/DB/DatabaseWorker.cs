@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
+using ConsoleApp1.Exceptions;
 
 namespace ConsoleApp1
 {
@@ -34,6 +34,10 @@ namespace ConsoleApp1
             };
 
             var shop = DB.Shops.Single(shop => shop.Id == shopId);
+            if(shop == null)
+            {
+                throw new Exception("Shop Not Found");
+            }
             product.Shop = shop;
 
             DB.Products.Add(product);
@@ -218,8 +222,16 @@ namespace ConsoleApp1
 
         public Shop FindLowestPriceShop(string name)
         {
-            var result = GetSortedProductList(name)[0];
-            return result?.Shop;
+            try
+            {
+                Product product = GetSortedProductList(name)[0];
+                return product.Shop;
+            }
+            catch(ProductNotFoundException e)
+            {
+                throw e;
+            }
+            
         }
 
         public List<Product> GetSortedProductList(string name)
