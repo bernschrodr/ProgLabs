@@ -49,17 +49,22 @@ namespace ConsoleApp1
             foreach (var product in products)
             {
 
+                if(!Products.Any(prod => prod.Name == product.Key))
+                {
+                    throw new ProductNotFoundException();
+                }
+
                 var matchedProduct = Products.Where(prod => prod.Name == product.Key)
                     .Where(prod => prod.Count >= product.Value).ToList();
 
-                if (matchedProduct != null && matchedProduct.Count > 0)
+                if (matchedProduct.Count > 0)
                 {
                     matchedProduct.Sort();
                     productsByName.Add(product.Key, matchedProduct);
                 }
                 else
                 {
-                    throw new Exception("Не хватает/нет товаров");
+                    throw new ProductNotEnoughException();
                 }
             }
 
@@ -111,7 +116,7 @@ namespace ConsoleApp1
                 }
             }
 
-            return min.shop ?? throw new Exception("Ни в одном магазине не продается данный набор");
+            return min.shop ?? throw new ShopNoSellingAllProductsException();
             ;
         }
 
@@ -200,7 +205,7 @@ namespace ConsoleApp1
 
                 if (accumulated < count)
                 {
-                    throw new System.Exception("Не хватает товара");
+                    throw new ProductNotEnoughException();
                 }
 
                 return price;
@@ -208,7 +213,7 @@ namespace ConsoleApp1
             else
             {
 
-                throw new System.Exception("Не найден");
+                throw new ProductNotFoundException();
             }
         }
 
@@ -226,11 +231,11 @@ namespace ConsoleApp1
                         return prod.Price * count;
                     }
                 }
-                throw new Exception("Невозможно купить в таком колличестве");
+                throw new ProductNotEnoughException();
             }
             else
             {
-                throw new Exception("Невозможно найти");
+                throw new ProductNotFoundException();
             }
         }
 

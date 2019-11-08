@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleApp1.Exceptions
 {
-    class ShopNoSellingAllProductsException
+    class ShopNoSellingAllProductsException : Exception
     {
+        public ShopNoSellingAllProductsException() : base("There are no shops selling these products") { }
     }
 }
