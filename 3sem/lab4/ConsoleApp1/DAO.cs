@@ -1,19 +1,28 @@
-﻿namespace ConsoleApp1
+﻿using System;
+using System.IO;
+
+namespace ConsoleApp1
 {
     class DAO
     {
-        IWorker Worker { get; }
+        public IDataWorker Data { get; }
         public DAO()
         {
             switch (Settings.Default.WorkerType)
             {
                 case "CSV":
-                    Worker = new CsvWorker();
+                    using (StreamReader productsPath = new StreamReader(Settings.Default.ProductsPath),
+                        shopsPath = new StreamReader(Settings.Default.ShopsPath))
+                    {
+                        Data = new CsvWorker(productsPath, shopsPath);
+                    }
                     break;
 
                 case "DB":
-                    Worker = new DatabaseWorker();
+                    Data = new DatabaseWorker();
                     break;
+                default:
+                    throw new Exception("Wrong Config: 'WorkerType'");
             }
         }
     }

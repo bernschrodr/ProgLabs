@@ -25,12 +25,11 @@ namespace ConsoleApp1
             Count = count;
         }
         public int CompareTo(object comparing) {
-            Product comp = comparing as Product;
-            if(comp == null)
+            if (!(comparing is Product comp))
             {
                 throw new Exception("Невозможно сравнить");
             }
-            if(this.Price < comp.Price)
+            if (this.Price < comp.Price)
             {
                 return -1;
             }

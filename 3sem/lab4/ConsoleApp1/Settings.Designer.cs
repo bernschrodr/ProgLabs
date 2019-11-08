@@ -25,13 +25,37 @@ namespace ConsoleApp1 {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CSV")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DB")]
         public string WorkerType {
             get {
                 return ((string)(this["WorkerType"]));
             }
             set {
                 this["WorkerType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("products.csv")]
+        public string ProductsPath {
+            get {
+                return ((string)(this["ProductsPath"]));
+            }
+            set {
+                this["ProductsPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("shops.csv")]
+        public string ShopsPath {
+            get {
+                return ((string)(this["ShopsPath"]));
+            }
+            set {
+                this["ShopsPath"] = value;
             }
         }
     }

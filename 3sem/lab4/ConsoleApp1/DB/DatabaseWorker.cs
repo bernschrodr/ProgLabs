@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ConsoleApp1
 {
-    public class DatabaseWorker : IWorker
+    public class DatabaseWorker : IDataWorker
     {
         public Database DB { get; }
         public DatabaseWorker()
@@ -37,18 +37,6 @@ namespace ConsoleApp1
             product.Shop = shop;
 
             DB.Products.Add(product);
-            DB.SaveChanges();
-        }
-        public void CreateProduct(string name, double price, int count, List<Shop> shops)
-        {
-            foreach (var shop in shops)
-            {
-                var product = new Product(name, price, count)
-                {
-                    Shop = shop
-                };
-                DB.Products.Add(product);
-            }
             DB.SaveChanges();
         }
 
@@ -130,9 +118,8 @@ namespace ConsoleApp1
                 }
             }
 
-            return min.shop == null
-                 ? throw new Exception("Ќи в одном магазине не продаетс€ данный набор")
-                 : min.shop;
+            return min.shop ?? throw new Exception("Ќи в одном магазине не продаетс€ данный набор");
+            ;
 
 
         }
@@ -169,7 +156,7 @@ namespace ConsoleApp1
 
         }
 
-        public double BuyProduct(string name, int count)
+        public double BuyOneProduct(string name, int count)
         {
             double price = 0;
             int accumulated = 0;
@@ -205,7 +192,7 @@ namespace ConsoleApp1
 
         }
 
-        public double BuyProduct(string name, int count, int shopId)
+        public double BuyOneProduct(string name, int count, int shopId)
         {
             var products = DB.Products.Include(prod => prod.Shop)
                 .Where(prod => prod.Name == name)
@@ -244,16 +231,27 @@ namespace ConsoleApp1
             var products = DB.Products.Include(prod => prod.Shop)
                 .Where(prod => prod.Name == name).ToList();
             products.Sort();
-            if (products.Count() > 0)
-            {
-                return products;
-            }
-            else
-            {
-                return null;
-            }
+
+            return products.Count() > 0
+                 ? products
+                 : null;
         }
 
-
+        public double BuyListProduct(Dictionary<string, (int count,int shopId)> buyList)
+        {
+            double sum = 0;
+            foreach (var product in buyList)
+            {
+                try
+                {
+                    sum += BuyOneProduct(product.Key,product.Value.count,product.Value.shopId);
+                }
+                catch(Exception e)
+                {
+                    throw e;
+                }
+            }
+            return sum;
+        }
     }
 }

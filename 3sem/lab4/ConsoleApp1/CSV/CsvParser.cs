@@ -70,6 +70,10 @@ namespace ConsoleApp1
                     if (shops.TryGetValue(shopId, out var outShop))
                     {
                         product.Shop = outShop;
+                        if (outShop.Products == null)
+                        {
+                            outShop.Products = new List<Product>();
+                        }
                         outShop.Products.Add(product);
                     }
                     products.Add(product);
