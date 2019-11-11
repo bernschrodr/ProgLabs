@@ -7,8 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +19,7 @@
 
   <ItemGroup>
     <None Update="products.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

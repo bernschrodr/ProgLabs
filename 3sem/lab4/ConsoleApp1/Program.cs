@@ -13,7 +13,8 @@ namespace ConsoleApp1
                 case "DB":
                     ConsoleApp1.Tests.DbTest.Start();
                     break;
-                
+                default:
+                    return;
             }
         }
     }

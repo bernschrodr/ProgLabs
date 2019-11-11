@@ -3,10 +3,10 @@ using System;
 
 namespace ConsoleApp1
 {
-    public class Product : IComparable 
+    public class Product : IComparable
     {
 
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         public int Count { get; set; }
@@ -22,7 +22,8 @@ namespace ConsoleApp1
             Price = price;
             Count = count;
         }
-        public int CompareTo(object comparing) {
+        public int CompareTo(object comparing)
+        {
             if (!(comparing is Product comp))
             {
                 throw new Exception("Невозможно сравнить");
@@ -31,7 +32,7 @@ namespace ConsoleApp1
             {
                 return -1;
             }
-            if(this.Price > comp.Price)
+            if (this.Price > comp.Price)
             {
                 return 1;
             }
@@ -39,6 +40,11 @@ namespace ConsoleApp1
             {
                 return 0;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Name}";
         }
         public override int GetHashCode()
         {

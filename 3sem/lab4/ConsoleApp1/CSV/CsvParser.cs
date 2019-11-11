@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
 namespace ConsoleApp1
 {
@@ -51,13 +51,13 @@ namespace ConsoleApp1
                     {
                         Name = columns[0]
                     };
-                    
-                   if (Int32.TryParse(columns[i], NumberStyles.Number,
-                    new CultureInfo("en-US"), out int shopId) &&
-                        Int32.TryParse(columns[i + 1], NumberStyles.Number,
-                    new CultureInfo("en-US"), out int count) &&
-                        Double.TryParse(columns[i + 2], NumberStyles.Number,
-                    new CultureInfo("en-US"), out double price))
+
+                    if (Int32.TryParse(columns[i], NumberStyles.Number,
+                     new CultureInfo("en-US"), out int shopId) &&
+                         Int32.TryParse(columns[i + 1], NumberStyles.Number,
+                     new CultureInfo("en-US"), out int count) &&
+                         Double.TryParse(columns[i + 2], NumberStyles.Number,
+                     new CultureInfo("en-US"), out double price))
                     {
                         product.ShopId = shopId;
                         product.Count = count;
@@ -78,7 +78,7 @@ namespace ConsoleApp1
                     }
                     products.Add(product);
                 }
-                
+
             }
             return products;
 

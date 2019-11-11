@@ -10,8 +10,8 @@ namespace ConsoleApp1
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Product> Products {get; set;}
-        
+        public List<Product> Products { get; set; }
+
         public Shop() { }
 
         public Shop(int ShopId, string Name)
@@ -37,6 +37,11 @@ namespace ConsoleApp1
             return this.Id == other.Id
                   ? true
                   : false;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Id},{this.Name}";
         }
     }
 }

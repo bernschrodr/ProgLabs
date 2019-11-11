@@ -1,9 +1,9 @@
 
+using ConsoleApp1.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using ConsoleApp1.Exceptions;
 
 namespace ConsoleApp1
 {
@@ -34,11 +34,7 @@ namespace ConsoleApp1
             };
 
             var shop = DB.Shops.Single(shop => shop.Id == shopId);
-            if(shop == null)
-            {
-                throw new Exception("Shop Not Found");
-            }
-            product.Shop = shop;
+            product.Shop = shop ?? throw new Exception("Shop Not Found");
 
             DB.Products.Add(product);
             DB.SaveChanges();
@@ -48,9 +44,22 @@ namespace ConsoleApp1
         {
             foreach (var product in products)
             {
-                DB.Products.Add(product);
+                var editingProducts = DB.Products.Include(prod => prod.Shop)
+                    .Where(prod => prod.ShopId == product.ShopId && prod.Name == product.Name)
+                    .AsEnumerable()
+                    .Select(prod =>
+                    {
+                        prod.Price = product.Price;
+                        prod.Count += product.Count;
+                        return prod;
+                    });
+                foreach (var prod in editingProducts)
+                {
+                    DB.Entry(prod).State = EntityState.Modified;
+                }
             }
             DB.SaveChanges();
+
         }
 
         public Shop FindLowestPriceShop(Dictionary<string, int> products)
@@ -133,12 +142,12 @@ namespace ConsoleApp1
 
         }
 
-        public Dictionary<int, Product> GetHowMuchCanBuy(int shopId, double money)
+        public List<(int count, Product prod)> GetHowMuchCanBuy(int shopId, double money)
         {
             var products = DB.Products.Include(prod => prod.Shop)
                 .Where(prod => prod.ShopId == shopId).ToList();
 
-            Dictionary<int, Product> howMuch = new Dictionary<int, Product>();
+            List<(int count, Product prod)> howMuch = new List<(int count, Product prod)>();
             if (products != null && products.Count > 0)
             {
                 foreach (var prod in products)
@@ -146,11 +155,11 @@ namespace ConsoleApp1
                     int count = (int)(money / prod.Price);
                     if (count > prod.Count)
                     {
-                        howMuch.Add(prod.Count, prod);
+                        howMuch.Add((prod.Count, prod));
                     }
                     else
                     {
-                        howMuch.Add(count, prod);
+                        howMuch.Add((count, prod));
                     }
                 }
                 return howMuch.Count > 0
@@ -170,9 +179,10 @@ namespace ConsoleApp1
             double price = 0;
             int accumulated = 0;
             var products = GetSortedProductList(name);
+            int index = 0;
             if (products != null)
             {
-                for (var i = 0; i < products.Count; i++)
+                for (var i = 0; i < products.Count; i++, index++)
                 {
                     if (products[i].Count < count - accumulated)
                     {
@@ -183,6 +193,8 @@ namespace ConsoleApp1
                     {
                         price += (count - accumulated) * products[i].Price;
                         accumulated += count - accumulated;
+                        products[i].Count = count - accumulated;
+                        index--;
                     }
                 }
 
@@ -191,6 +203,12 @@ namespace ConsoleApp1
                     throw new ProductNotEnoughException();
                 }
 
+                for (var i = 0; i < index; i++)
+                {
+                    products[i].Count = 0;
+                }
+
+                DB.SaveChanges();
                 return price;
             }
             else
@@ -232,11 +250,11 @@ namespace ConsoleApp1
                 Product product = GetSortedProductList(name)[0];
                 return product.Shop;
             }
-            catch(ProductNotFoundException e)
+            catch (ProductNotFoundException e)
             {
                 throw e;
             }
-            
+
         }
 
         public List<Product> GetSortedProductList(string name)
@@ -254,21 +272,45 @@ namespace ConsoleApp1
                  : null;
         }
 
-        public double BuyListProduct(Dictionary<string, (int count,int shopId)> buyList)
+        public double BuyListProduct(Dictionary<string, (int count, int shopId)> buyList)
         {
             double sum = 0;
             foreach (var product in buyList)
             {
                 try
                 {
-                    sum += BuyOneProduct(product.Key,product.Value.count,product.Value.shopId);
+                    sum += BuyOneProduct(product.Key, product.Value.count, product.Value.shopId);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw e;
                 }
             }
             return sum;
+        }
+
+        public Dictionary<string, List<Product>> GetProductByName()
+        {
+            var products = DB.Products.Include(prod => prod.Shop);
+            Dictionary<string, List<Product>> productByName = new Dictionary<string, List<Product>>();
+
+            foreach (var product in products)
+            {
+                if (productByName.TryGetValue(product.Name, out var outProductList))
+                {
+                    outProductList.Add(product);
+                }
+                else
+                {
+                    var initList = new List<Product>
+                    {
+                        product
+                    };
+                    productByName.Add(product.Name, initList);
+                }
+            }
+
+            return productByName;
         }
     }
 }

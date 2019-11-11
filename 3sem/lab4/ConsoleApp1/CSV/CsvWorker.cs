@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ConsoleApp1.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ConsoleApp1.Exceptions;
 
 namespace ConsoleApp1
 {
@@ -11,7 +11,7 @@ namespace ConsoleApp1
         Dictionary<int, Shop> Shops { get; }
         List<Product> Products { get; }
 
-        public CsvWorker(StreamReader productFile, StreamReader shopsFile) 
+        public CsvWorker(StreamReader productFile, StreamReader shopsFile)
         {
             Shops = CsvParser.ParseShops(shopsFile);
             Products = CsvParser.ParseProducts(productFile, Shops);
@@ -39,7 +39,7 @@ namespace ConsoleApp1
             if (!Shops.TryGetValue(id, out var outShop))
             {
                 var shop = new Shop(id, name);
-                Shops.Add(shop.Id,shop);
+                Shops.Add(shop.Id, shop);
             }
         }
 
@@ -49,7 +49,7 @@ namespace ConsoleApp1
             foreach (var product in products)
             {
 
-                if(!Products.Any(prod => prod.Name == product.Key))
+                if (!Products.Any(prod => prod.Name == product.Key))
                 {
                     throw new ProductNotFoundException();
                 }
@@ -134,11 +134,11 @@ namespace ConsoleApp1
 
         }
 
-        public Dictionary<int, Product> GetHowMuchCanBuy(int shopId, double money)
+        public List<(int count, Product prod)> GetHowMuchCanBuy(int shopId, double money)
         {
             var products = Products.Where(prod => prod.ShopId == shopId).ToList();
 
-            Dictionary<int, Product> howMuch = new Dictionary<int, Product>();
+            List<(int count, Product prod)> howMuch = new List<(int count, Product prod)>();
             if (products != null && products.Count > 0)
             {
                 foreach (var prod in products)
@@ -146,11 +146,11 @@ namespace ConsoleApp1
                     int count = (int)(money / prod.Price);
                     if (count > prod.Count)
                     {
-                        howMuch.Add(prod.Count, prod);
+                        howMuch.Add((prod.Count, prod));
                     }
                     else
                     {
-                        howMuch.Add(count, prod);
+                        howMuch.Add((count, prod));
                     }
                 }
                 return howMuch.Count > 0

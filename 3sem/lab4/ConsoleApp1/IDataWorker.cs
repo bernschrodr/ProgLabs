@@ -9,7 +9,7 @@ namespace ConsoleApp1
         public void CreateProduct(string name, double price, int count, int shopId);
         public void RestockProducts(List<Product> products);
         public Shop FindLowestPriceShop(Dictionary<string, int> products);
-        public Dictionary<int, Product> GetHowMuchCanBuy(int shopId, double money);
+        public List<(int count, Product prod)> GetHowMuchCanBuy(int shopId, double money);
         public double BuyOneProduct(string name, int count);
         public double BuyOneProduct(string name, int count, int shopId);
         public double BuyListProduct(Dictionary<string, (int count, int shopId)> buyList);

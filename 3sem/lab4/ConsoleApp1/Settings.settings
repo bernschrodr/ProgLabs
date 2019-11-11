@@ -3,13 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="WorkerType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CSV</Value>
+      <Value Profile="(Default)">DB</Value>
     </Setting>
     <Setting Name="ProductsPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">products.csv</Value>
+      <Value Profile="(Default)">C:\Users\berns\OneDrive\Documents\Code\ProgLabs\3sem\lab4\ConsoleApp1\products.csv</Value>
     </Setting>
     <Setting Name="ShopsPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">shops.csv</Value>
+      <Value Profile="(Default)">C:\Users\berns\OneDrive\Documents\Code\ProgLabs\3sem\lab4\ConsoleApp1\shops.csv</Value>
+    </Setting>
+    <Setting Name="DbConnectString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=(localdb)\mssqllocaldb;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -25,7 +25,7 @@ namespace ConsoleApp1 {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CSV")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DB")]
         public string WorkerType {
             get {
                 return ((string)(this["WorkerType"]));
@@ -37,7 +37,8 @@ namespace ConsoleApp1 {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("products.csv")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab4\\ConsoleApp1\\products.cs" +
+            "v")]
         public string ProductsPath {
             get {
                 return ((string)(this["ProductsPath"]));
@@ -49,13 +50,25 @@ namespace ConsoleApp1 {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("shops.csv")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\berns\\OneDrive\\Documents\\Code\\ProgLabs\\3sem\\lab4\\ConsoleApp1\\shops.csv")]
         public string ShopsPath {
             get {
                 return ((string)(this["ShopsPath"]));
             }
             set {
                 this["ShopsPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\mssqllocaldb;")]
+        public string DbConnectString {
+            get {
+                return ((string)(this["DbConnectString"]));
+            }
+            set {
+                this["DbConnectString"] = value;
             }
         }
     }
