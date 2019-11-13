@@ -25,7 +25,7 @@ namespace ConsoleApp1 {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DB")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CSV")]
         public string WorkerType {
             get {
                 return ((string)(this["WorkerType"]));

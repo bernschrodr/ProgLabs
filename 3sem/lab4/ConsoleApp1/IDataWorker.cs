@@ -15,6 +15,8 @@ namespace ConsoleApp1
         public double BuyListProduct(Dictionary<string, (int count, int shopId)> buyList);
         public Shop FindLowestPriceShop(string name);
         public List<Product> GetSortedProductList(string name);
+        public Dictionary<string, List<Product>> GetProductByName();
+        public void Save();
 
     }
 }

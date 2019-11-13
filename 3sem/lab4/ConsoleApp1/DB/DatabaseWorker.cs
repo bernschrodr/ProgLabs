@@ -230,6 +230,8 @@ namespace ConsoleApp1
                 {
                     if (prod.Count >= count)
                     {
+                        prod.Count -= count;
+                        this.Save();
                         return prod.Price * count;
                     }
                 }
@@ -311,6 +313,11 @@ namespace ConsoleApp1
             }
 
             return productByName;
+        }
+
+        public void Save()
+        {
+            DB.SaveChanges();
         }
     }
 }

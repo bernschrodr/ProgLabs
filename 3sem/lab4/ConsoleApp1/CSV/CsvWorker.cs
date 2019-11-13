@@ -185,7 +185,7 @@ namespace ConsoleApp1
         public double BuyOneProduct(string name, int count)
         {
             double price = 0;
-            int accumulated = 0;
+            int accumulated = 0, index = 0;
             var products = GetSortedProductList(name);
             if (products != null)
             {
@@ -195,14 +195,21 @@ namespace ConsoleApp1
                     {
                         accumulated += products[i].Count;
                         price += products[i].Count * products[i].Price;
+                        index = i;
                     }
                     else
                     {
                         price += (count - accumulated) * products[i].Price;
                         accumulated += count - accumulated;
+                        products[i].Count -= count - accumulated; 
                     }
                 }
 
+                for(var i = 0; i < index; i++)
+                {
+                    products[i].Count = 0;
+                }
+                this.Save();
                 if (accumulated < count)
                 {
                     throw new ProductNotEnoughException();
@@ -228,6 +235,8 @@ namespace ConsoleApp1
                 {
                     if (prod.Count >= count)
                     {
+                        prod.Count -= count;
+                        this.Save();
                         return prod.Price * count;
                     }
                 }
@@ -255,5 +264,54 @@ namespace ConsoleApp1
             }
             return sum;
         }
+        public Dictionary<string, List<Product>> GetProductByName()
+        {
+            Dictionary<string, List<Product>> productByName = new Dictionary<string, List<Product>>();
+
+            foreach (var product in Products)
+            {
+                if (productByName.TryGetValue(product.Name, out var outProductList))
+                {
+                    outProductList.Add(product);
+                }
+                else
+                {
+                    var initList = new List<Product>
+                    {
+                        product
+                    };
+                    productByName.Add(product.Name, initList);
+                }
+            }
+
+            return productByName;
+        }
+        public void Save()
+        {
+            using StreamWriter productsFile = new StreamWriter(Settings.Default.ProductsPath, false),
+                       shopsFile = new StreamWriter(Settings.Default.ShopsPath, false);
+            string shopCSV = "", productCSV = "";
+            
+            foreach (var shop in Shops)
+            {
+                shopCSV += $"{shop.Key},{shop.Value.Name}{Environment.NewLine}";
+            }
+            var productsByName = this.GetProductByName();
+            foreach (var productList in productsByName)
+            {
+                string name = productList.Key;
+                productCSV += name;
+                foreach (var product in productList.Value)
+                {
+                    productCSV += $",{product.ShopId},{product.Count},{product.Price}";
+                }
+                productCSV += Environment.NewLine;
+            }
+
+            productsFile.Write(productCSV);
+            shopsFile.Write(shopCSV);
+        
+    }
+
     }
 }
