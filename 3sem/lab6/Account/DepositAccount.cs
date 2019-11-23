@@ -1,5 +1,5 @@
 using System;
-namespace lab6.Account
+namespace lab6
 {
     public class DepositAccount : AbstractAccount
     {

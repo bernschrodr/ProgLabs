@@ -1,5 +1,4 @@
-namespace lab6.Account
-{
+namespace lab6
     public class CreditAccount : AbstractAccount
     {   
         public CreditAccount(float tax, float limit){

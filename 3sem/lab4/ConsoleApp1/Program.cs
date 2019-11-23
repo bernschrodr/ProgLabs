@@ -5,6 +5,9 @@ namespace ConsoleApp1
     {
         static void Main()
         {
+            ConsoleApp1.Tests.CsvTest.Start();
+            ConsoleApp1.Tests.DbTest.Start();
+            return;
             switch (Settings.Default.WorkerType)
             {
                 case "CSV":
