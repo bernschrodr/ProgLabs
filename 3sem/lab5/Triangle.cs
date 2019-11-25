@@ -67,8 +67,10 @@ namespace lab5
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "INSERT INTO SerializeDB.dbo.Triangles (Id,A,B,C) VALUES ({id}, '{A.x},{A.y}', '{B.x},{B.y}', '{C.x},{C.y}')";
-                SqlCommand command = new SqlCommand(query,connectionString);
+                string query = $"INSERT INTO SerializeDB.dbo.Triangles (Id,A,B,C) VALUES ({id}, '{A.X},{A.Y}', '{B.X},{B.Y}', '{C.X},{C.Y}')";
+                SqlCommand command = new SqlCommand(query,connection);
+                connection.Open();
+                command.ExecuteNonQuery();
             };
         }
 
