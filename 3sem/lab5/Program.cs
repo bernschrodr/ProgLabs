@@ -7,9 +7,9 @@ namespace lab5
     {
         static void Main()
         {
-            Triangle tr = new Triangle(new Vector2D(0, 0), new Vector2D(0, 5), new Vector2D(5, 0));
+            Triangle firstTriangle = new Triangle(new Vector2D(0, 0), new Vector2D(0, 5), new Vector2D(5, 0));
             StreamWriter xmlFileWrite = new StreamWriter("./Triangle.xml");
-            tr.XmlSerialize(xmlFileWrite);
+            firstTriangle.XmlSerialize(xmlFileWrite);
             xmlFileWrite.Close();
 
             Triangle deserializedTriangle = new Triangle();
@@ -18,14 +18,14 @@ namespace lab5
             xmlFileRead.Close();
             string equal = "Objects Equal", notEqual = "Objects Not Equal";
 
-            Console.WriteLine(tr == deserializedTriangle
+            Console.WriteLine(firstTriangle == deserializedTriangle
                                     ? equal
                                     : notEqual);
 
 
 
             FileStream binFileWrite = new FileStream("./Triangle.bin", FileMode.Create);
-            tr.BinSerialize(binFileWrite);
+            firstTriangle.BinSerialize(binFileWrite);
             binFileWrite.Close();
 
             deserializedTriangle = new Triangle();
@@ -33,12 +33,17 @@ namespace lab5
             deserializedTriangle.BinDeserialize(binFileRead);
             binFileRead.Close();
 
-            Console.WriteLine(tr == deserializedTriangle
+            Console.WriteLine(firstTriangle == deserializedTriangle
                                     ? equal
                                     : notEqual);
 
             string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SerializeDB;";
-            tr.DBSerialize(connectionString, 2);
+            //firstTriangle.DBSerialize(connectionString, 2);
+            deserializedTriangle = new Triangle();
+            deserializedTriangle.DBDeserialize(connectionString, 2);
+            Console.WriteLine(firstTriangle == deserializedTriangle
+                                   ? equal
+                                   : notEqual);
 
         }
     }
