@@ -16,7 +16,15 @@ namespace lab6
                 {
                     var account = request as StandartAccount;
                     account.Replenish(account.Money * account.Percent);
-                    return NextHandler.Handle(request);
+                    if (NextHandler != null)
+                    {
+                        return NextHandler.Handle(request);
+                    }
+                    else
+                    {
+                        return account;
+                    }
+
                 }
                 else
                 {

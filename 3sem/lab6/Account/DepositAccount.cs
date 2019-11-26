@@ -3,10 +3,13 @@ namespace lab6
 {
     public class DepositAccount : AbstractAccount
     {
-        public DepositAccount(float money, DateTime expires):base(money){
-            Expires = expires;
+        public DepositAccount(int expires, float percent, Client client) : base(client)
+        {
+            Expires = new DateTime(DateTime.Now.Ticks + expires * TimeSpan.TicksPerDay);
+            Percent = percent;
         }
-        public DepositAccount(int expires){
+        public DepositAccount(int expires)
+        {
             /*
             Добавляем к времени в данный момент время, через которое можно будет снять деньги
             и конвертируем все значения в тики
@@ -21,7 +24,7 @@ namespace lab6
             {
                 throw new NotEnoughException();
             }
-            if(this.Expires > DateTime.Now)
+            if (this.Expires > DateTime.Now)
             {
                 throw new NotExpiredYet();
             }

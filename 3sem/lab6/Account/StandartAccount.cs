@@ -3,13 +3,7 @@ namespace lab6
 {
     public class StandartAccount : AbstractAccount
     {
-        public StandartAccount(float money, float percent, int accrualPeriodInDays) : base(money)
-        {
-            Percent = percent;
-            AccrualPeriodInDays = accrualPeriodInDays;
-            AccrualPeriodInDateTime = new DateTime(DateTime.Now.Ticks + accrualPeriodInDays * TimeSpan.TicksPerDay);
-        }
-        public StandartAccount(float percent, int accrualPeriodInDays)
+        public StandartAccount(float percent, int accrualPeriodInDays,Client client) : base(client)
         {
             Percent = percent;
             AccrualPeriodInDays = accrualPeriodInDays;
