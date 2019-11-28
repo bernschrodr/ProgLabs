@@ -10,35 +10,31 @@ namespace lab6
             {
                 throw new WrongFactorySettings();
             }
-            string accountType = "";
-            for (var i = 0; i < 1; i++)
-            {
 
+            AccountType accountType = AccountType.DoesntMatch;
+            bool accountTypeSelected = false;
 
-                accountType = accountType == "" && expiresInDay != null && percent != null
-                            ? "Deposit"
-                            : "";
-                if (accountType != "") { break; }
-                accountType = accountType == "" && accrualPeriod != null && percent != null
-                            ? "Standart"
-                            : "";
-                if (accountType != "") { break; }
-                accountType = accountType == "" && tax != null && limit != null
-                            ? "Credit"
-                            : "";
-                if (accountType != "") { break; }
-
+            if(!accountTypeSelected && expiresInDay.HasValue && percent.HasValue){
+                accountType = AccountType.DepositAccount;
             }
-            if (accountType == "")
+            
+            if(!accountTypeSelected && accrualPeriod.HasValue && percent.HasValue){
+                accountType = AccountType.StandartAccount;
+            }
+            if(!accountTypeSelected && tax.HasValue && limit.HasValue){
+                accountType = AccountType.CreditAccount;
+            }
+            
+            if (accountType == AccountType.DoesntMatch)
             {
                 throw new WrongFactorySettings();
             }
 
             return accountType switch
             {
-                "Deposit" => new DepositAccount((int)expiresInDay, (float)percent, client),
-                "Standart" => new StandartAccount((float)percent, (int)accrualPeriod, client),
-                "Credit" => new CreditAccount((float)tax, (float)limit, client),
+                AccountType.DepositAccount => new DepositAccount(expiresInDay.Value, percent.Value, client),
+                AccountType.StandartAccount => new StandartAccount(percent.Value, accrualPeriod.Value, client),
+                AccountType.CreditAccount => new CreditAccount(tax.Value, limit.Value, client),
                 _ => throw new WrongFactorySettings(),
             };
         }

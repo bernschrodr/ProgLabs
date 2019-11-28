@@ -38,7 +38,7 @@ namespace lab6
             }
             catch (UnverifiedLimitExceeded e)
             {
-                Console.WriteLine("Unverified Account Limit Exceeded");
+                Console.WriteLine(e);
             }
             //Цепочка обязанностей
             AccrueInterestHandler accrueHandler = new AccrueInterestHandler();
