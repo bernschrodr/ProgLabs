@@ -4,6 +4,5 @@ namespace lab6{
         StandartAccount,
         DepositAccount,
         CreditAccount,
-        DoesntMatch
     }
 }

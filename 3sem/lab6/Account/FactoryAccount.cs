@@ -1,4 +1,3 @@
-using System;
 namespace lab6
 {
     public static class FactoryAccount
@@ -11,31 +10,37 @@ namespace lab6
                 throw new WrongFactorySettings();
             }
 
-            AccountType accountType = AccountType.DoesntMatch;
+            AccountType? accountType = null;
             bool accountTypeSelected = false;
 
-            if(!accountTypeSelected && expiresInDay.HasValue && percent.HasValue){
+            if (!accountTypeSelected && expiresInDay.HasValue && percent.HasValue)
+            {
                 accountType = AccountType.DepositAccount;
             }
-            
-            if(!accountTypeSelected && accrualPeriod.HasValue && percent.HasValue){
+
+            if (!accountTypeSelected && accrualPeriod.HasValue && percent.HasValue)
+            {
                 accountType = AccountType.StandartAccount;
             }
-            if(!accountTypeSelected && tax.HasValue && limit.HasValue){
+            if (!accountTypeSelected && tax.HasValue && limit.HasValue)
+            {
                 accountType = AccountType.CreditAccount;
             }
-            
-            if (accountType == AccountType.DoesntMatch)
+            if (!accountType.HasValue)
             {
                 throw new WrongFactorySettings();
             }
 
-            return accountType switch
+            switch (accountType)
             {
-                AccountType.DepositAccount => new DepositAccount(expiresInDay.Value, percent.Value, client),
-                AccountType.StandartAccount => new StandartAccount(percent.Value, accrualPeriod.Value, client),
-                AccountType.CreditAccount => new CreditAccount(tax.Value, limit.Value, client),
-                _ => throw new WrongFactorySettings(),
+                case AccountType.DepositAccount:
+                    return new DepositAccount(expiresInDay.Value, percent.Value, client);
+                case AccountType.StandartAccount:
+                    return new StandartAccount(percent.Value, accrualPeriod.Value, client);
+                case AccountType.CreditAccount:
+                    return new CreditAccount(tax.Value, limit.Value, client);
+                default:
+                    throw new WrongFactorySettings();
             };
         }
     }
