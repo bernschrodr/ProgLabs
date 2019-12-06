@@ -12,9 +12,9 @@ public class HTTPServer{
             // Пусть будет по 4 на каждый процессор
             int MaxThreadsCount = Environment.ProcessorCount * 4;
             // Установим максимальное количество рабочих потоков
-            ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
+            ThreadPool.SetMaxThreads(1, 1);
             // Установим минимальное количество рабочих потоков
-            ThreadPool.SetMinThreads(2, 2);
+            ThreadPool.SetMinThreads(1, 1);
             // Создадим новый сервер на порту 80
             new Server(80);
         }

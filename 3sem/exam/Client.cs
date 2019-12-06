@@ -52,12 +52,16 @@ namespace HTTPServer
                 return;
             }
 
+
+
             // Получаем строку запроса
             string RequestUri = ReqMatch.Groups[1].Value;
 
             // Приводим ее к изначальному виду, преобразуя экранированные символы
             // Например, "%20" -> " "
             RequestUri = Uri.UnescapeDataString(RequestUri);
+
+
 
             // Если в строке содержится двоеточие, передадим ошибку 400
             // Это нужно для защиты от URL типа http://example.com/../../file.txt
@@ -82,56 +86,60 @@ namespace HTTPServer
 
             // Если строка запроса оканчивается на "/", то добавим к ней index.html
 
-
-            string FilePath = "./" + RequestUri;
+            string FilePath;
+            if (RequestUri.Equals("/"))
+            {
+                RequestUri = "./index.html";
+            }
+            else
+            {
+                RequestUri = "." + RequestUri;
+            }
+            FilePath = RequestUri;
 
             // Если в папке www не существует данного файла, посылаем ошибку 404
             if (!File.Exists(FilePath))
             {
                 if (FilePath.IndexOf(':') != -1)
                 {
-                    var rootDisk = Directory.GetFiles(RequestUri);
-                    List<string> filesLinks = new List<string>();
-                    foreach (var file in rootDisk)
+                    DirectoryInfo directory = null;
+                    foreach (var drive in allDrives)
                     {
-                        filesLinks.Add(HtmlWorker.CreateLink("./" + file, file));
+                        if (drive.Name.IndexOf(FilePath[2]) != -1)
+                        {
+                            directory = drive.RootDirectory;
+                        }
                     }
-                    string links = "";
-                    foreach (var link in filesLinks)
+                    if (directory != null)
                     {
-                        links += link + '\n';
+                        var rootFiles = directory.GetFiles();
+                        List<string> filesLinks = new List<string>();
+                        foreach (var file in rootFiles)
+                        {
+                            filesLinks.Add(HtmlWorker.CreateLink("./" + file.Name, file.Name));
+                        }
+                        string links = String.Join('\n', filesLinks);
+                        HtmlWorker.EditBodyHtml("<nav>", indexHtmlPath, links);
                     }
-                    HtmlWorker.EditBodyHtml("<nav>", indexHtmlPath, links);
-
                 }
                 else
                 {
                     if (Directory.Exists(RequestUri))
                     {
-                        var files = Directory.GetFiles(RequestUri);
-
-                        List<string> filesLinks = new List<string>();
-                        foreach (var file in files)
-                        {
-                            filesLinks.Add(HtmlWorker.CreateLink("./" + file, file));
-                        }
-                        string links = "";
-                        foreach (var link in filesLinks)
-                        {
-                            links += link + '\n';
-                        }
+                        var linksList = FileWorker.GetFileLinksList(RequestUri);
+                        string links = String.Join('\n', linksList);
                         HtmlWorker.EditBodyHtml("<nav>", indexHtmlPath, links);
                     }
                     else
                     {
-                        if (File.Exists(RequestUri))
+                        if (!File.Exists(RequestUri))
                         {
-                            
+                            SendError(Client, 404);
+                            return;
                         }
                     }
                 }
-                SendError(Client, 404);
-                return;
+
             }
 
             // Получаем расширение файла из строки запроса
@@ -177,7 +185,9 @@ namespace HTTPServer
             FileStream FS;
             try
             {
+                FilePath = indexHtmlPath;
                 FS = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                
             }
             catch (Exception)
             {

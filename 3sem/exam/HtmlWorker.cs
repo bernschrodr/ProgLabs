@@ -3,16 +3,14 @@ namespace HTTPServer
 {
     static public class HtmlWorker
     {
-        static public void EditBodyHtml(string openTag, string filePath, string input)
+        async static public void EditBodyHtml(string openTag, string filePath, string input)
         {
             int position = -1;
             string page;
 
-            using (StreamReader htmlFile = new StreamReader(filePath))
-            {
-                page = htmlFile.ReadToEnd();
-                htmlFile.Close();
-            }
+            StreamReader htmlFileReader = new StreamReader(filePath);
+            page = await htmlFileReader.ReadToEndAsync();
+            htmlFileReader.Close();
 
             int openTagPosition = page.IndexOf(openTag);
             int closeTagPosition = page.IndexOf(openTag.Substring(0, 1) + '/' + openTag.Substring(1, openTag.Length - 1));
@@ -20,13 +18,12 @@ namespace HTTPServer
             {
                 return;
             }
-            string result = page.Substring(0, openTagPosition) + input + page.Substring(closeTagPosition, page.Length - closeTagPosition);
+            string result = page.Substring(0, openTagPosition + openTag.Length) + input + page.Substring(closeTagPosition, page.Length - closeTagPosition);
 
-            using (StreamWriter htmlFile = new StreamWriter(filePath))
-            {
-                htmlFile.Write(result);
-                htmlFile.Close();
-            }
+            StreamWriter htmlFileWritter = new StreamWriter(filePath);
+            await htmlFileWritter.WriteAsync(result);
+            htmlFileWritter.Close();
+
         }
         static public string CreateLink(string path, string name)
         {
