@@ -8,6 +8,7 @@ namespace exam
     public static class FileWorker
     {
         public static DriveInfo[] _allDrives = DriveInfo.GetDrives();
+
         public static List<string> GetFileLinksList(string directory, string currentPath)
         {
             string[] files;
@@ -17,7 +18,7 @@ namespace exam
                 files = Directory.GetFiles(directory);
                 directories = Directory.GetDirectories(directory);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 Console.WriteLine("no permissions to view the folder");
                 throw;
@@ -29,19 +30,21 @@ namespace exam
                 string name = dir.Substring(dir.LastIndexOf('\\') + 1);
                 filesLinks.Add(HtmlWorker.CreateLink("/" + currentPath + "/" + name, name));
             }
+
             foreach (var file in files)
             {
                 string name = file.Substring(file.LastIndexOf('\\') + 1);
                 filesLinks.Add(HtmlWorker.CreateLink("/" + currentPath + "/" + name, name));
             }
-           
+
             if (filesLinks.Count == 0)
             {
                 filesLinks.Add("<h1>No Files In this Folder</h1>");
             }
+
             return filesLinks;
         }
-        
+
         public static List<string> GetFileLinksList(DirectoryInfo directory, string currentPath)
         {
             var files = directory.GetFiles();
@@ -53,17 +56,19 @@ namespace exam
             {
                 filesLinks.Add(HtmlWorker.CreateLink(currentPath + dir.Name, dir.Name));
             }
+
             foreach (var file in filtered)
             {
                 filesLinks.Add(HtmlWorker.CreateLink(currentPath + file.Name, file.Name));
             }
+
             if (filesLinks.Count == 0)
             {
                 filesLinks.Add("<h1>No Files In this Folder</h1>");
             }
+
             return filesLinks;
         }
-
 
         public static bool IsDriveExist(string driveName)
         {
@@ -75,12 +80,13 @@ namespace exam
                     return true;
                 }
             }
+
             return false;
         }
 
         public static DirectoryInfo GetDriveRoot(string driveName)
         {
-           driveName = driveName.Replace('/', '\\');
+            driveName = driveName.Replace('/', '\\');
             foreach (var drive in _allDrives)
             {
                 if (driveName == drive.Name)
@@ -88,6 +94,7 @@ namespace exam
                     return drive.RootDirectory;
                 }
             }
+
             return null;
         }
     }

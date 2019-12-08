@@ -4,52 +4,30 @@ using System;
 using System.Threading;
 using System.IO;
 
-
 namespace exam
 {
     public class Server
     {
-        TcpListener Listener; // Объект, принимающий TCP-клиентов
-
-        // Запуск сервера
-        public Server(int Port)
+        TcpListener _listener;
+        public Server(int port)
         {
-            Listener = new TcpListener(IPAddress.Any, Port); // Создаем "слушателя" для указанного порта
-            Listener.Start(); // Запускаем его
+            _listener = new TcpListener(IPAddress.Any, port);
+            _listener.Start();
 
-            // В бесконечном цикле
             while (true)
             {
-                // Принимаем новых клиентов. После того, как клиент был принят, он передается в новый поток (ClientThread)
-                // с использованием пула потоков.
-                ThreadPool.QueueUserWorkItem(new WaitCallback(ClientThread), Listener.AcceptTcpClient());
-
-                /*
-                // Принимаем нового клиента
-                TcpClient Client = Listener.AcceptTcpClient();
-                // Создаем поток
-                Thread Thread = new Thread(new ParameterizedThreadStart(ClientThread));
-                // И запускаем этот поток, передавая ему принятого клиента
-                Thread.Start(Client);
-                */
+                ThreadPool.QueueUserWorkItem(new WaitCallback(ClientThread), _listener.AcceptTcpClient());
             }
         }
 
-        static void ClientThread(Object StateInfo)
+        static void ClientThread(Object stateInfo)
         {
-            // Просто создаем новый экземпляр класса Client и передаем ему приведенный к классу TcpClient объект StateInfo
-            new Client((TcpClient)StateInfo);
+            var client = new Client((TcpClient) stateInfo);
         }
 
-        // Остановка сервера
         ~Server()
         {
-            // Если "слушатель" был создан
-            if (Listener != null)
-            {
-                // Остановим его
-                Listener.Stop();
-            }
+            _listener?.Stop();
         }
     }
 }
