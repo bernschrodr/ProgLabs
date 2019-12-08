@@ -5,7 +5,7 @@ using System.Threading;
 using System.IO;
 
 
-namespace HTTPServer
+namespace exam
 {
     public class Server
     {

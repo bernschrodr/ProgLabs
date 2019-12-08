@@ -7,13 +7,13 @@ using System.Net;
 using System;
 
 
-namespace HTTPServer
+namespace exam
 {
     // Класс-обработчик клиента
 
     public class Client
     {
-        DriveInfo[] allDrives = DriveInfo.GetDrives();
+        
 
         // Конструктор класса. Ему нужно передавать принятого клиента от TcpListener
         public Client(TcpClient Client)
@@ -42,7 +42,7 @@ namespace HTTPServer
 
             // Парсим строку запроса с использованием регулярных выражений
             // При этом отсекаем все переменные GET-запроса
-            Match ReqMatch = Regex.Match(Request, @"^\w+\s+([^\s\?]+)[^\s]*\s+HTTP/.*|");
+            Match ReqMatch = Regex.Match(Request, $@"^\w+\s+([^\s\?]+)[^\s]*\s+HTTP/.*|");
 
             // Если запрос не удался
             if (ReqMatch == Match.Empty)
@@ -51,9 +51,7 @@ namespace HTTPServer
                 SendError(Client, 400);
                 return;
             }
-
-
-
+            
             // Получаем строку запроса
             string RequestUri = ReqMatch.Groups[1].Value;
 
@@ -71,79 +69,95 @@ namespace HTTPServer
                 return;
             }
 
-            List<string> drivesLinks = new List<string>();
-            foreach (var drive in allDrives)
-            {
-                drivesLinks.Add(HtmlWorker.CreateLink("./" + drive.Name, drive.Name));
-            }
-            string allLinks = "";
-            foreach (var link in drivesLinks)
-            {
-                allLinks += link + '\n';
-            }
-            HtmlWorker.EditBodyHtml("<nav>", indexHtmlPath, allLinks);
+            string path = "";
+            ResponseType responseType = ResponseType.Drives;
 
-
-            // Если строка запроса оканчивается на "/", то добавим к ней index.html
-
-            string FilePath;
             if (RequestUri.Equals("/"))
             {
-                RequestUri = "./index.html";
+                path = "/";
+                responseType = ResponseType.Drives;
             }
-            else
+            if (RequestUri.Contains("path="))
             {
-                RequestUri = "." + RequestUri;
-            }
-            FilePath = RequestUri;
-
-            // Если в папке www не существует данного файла, посылаем ошибку 404
-            if (!File.Exists(FilePath))
-            {
-                if (FilePath.IndexOf(':') != -1)
+                path = RequestUri.Substring(RequestUri.IndexOf("=") + 1);
+                responseType = ResponseType.Directory;
+                if (RequestUri.Contains("."))
                 {
-                    DirectoryInfo directory = null;
+                    responseType = ResponseType.File;
+                }
+            }
+            if (path != String.Empty && responseType != ResponseType.Drives && path.Length < 4)
+            {
+                responseType = ResponseType.DriveRoot;
+            }
+            
+            string FilePath;
+
+            DriveInfo[] allDrives = FileWorker._allDrives;
+            string htmlPage = "";
+            HtmlWorker htmlWorker = new HtmlWorker();
+            switch (responseType)
+            {
+                case ResponseType.Drives:
+                    List<string> drivesLinks = new List<string>();
                     foreach (var drive in allDrives)
                     {
-                        if (drive.Name.IndexOf(FilePath[2]) != -1)
+                        drivesLinks.Add(HtmlWorker.CreateLink($"./path={drive.Name}", drive.Name));
+                    }
+                    string allLinks = "";
+                    foreach (var link in drivesLinks)
+                    {
+                        allLinks += $"{link}\n";
+                    }
+                   
+                    htmlPage = htmlWorker.EditBodyHtml("<nav>", indexHtmlPath, allLinks);
+                    break;
+                case  ResponseType.DriveRoot:
+                    string diskName = path;
+                    DirectoryInfo driveRoot = FileWorker.GetDriveRoot(diskName);
+                    var fileLinksList = FileWorker.GetFileLinksList( driveRoot, RequestUri);
+                    allLinks = "";
+                    foreach (var link in fileLinksList)
+                    {
+                        allLinks += $"{link}\n";
+                    }
+                    htmlPage = htmlWorker.EditBodyHtml("<nav>", indexHtmlPath, allLinks);
+                    break;
+                case  ResponseType.Directory:
+                    string? htmlBuff;
+                    try
+                    {
+                        htmlBuff = htmlWorker.CreateHtml(RequestUri);
+                        if (htmlBuff != null)
                         {
-                            directory = drive.RootDirectory;
+                            htmlPage = htmlWorker.EditBodyHtml("<nav>", indexHtmlPath, htmlBuff);
+                        }
+                        else
+                        {
+                            htmlPage = htmlWorker.EditBodyHtml("<nav>", indexHtmlPath, "<h1>Directory Not Exist</h1>");
                         }
                     }
-                    if (directory != null)
+                    catch (UnauthorizedAccessException e)
                     {
-                        var rootFiles = directory.GetFiles();
-                        List<string> filesLinks = new List<string>();
-                        foreach (var file in rootFiles)
-                        {
-                            filesLinks.Add(HtmlWorker.CreateLink("./" + file.Name, file.Name));
-                        }
-                        string links = String.Join('\n', filesLinks);
-                        HtmlWorker.EditBodyHtml("<nav>", indexHtmlPath, links);
+                        htmlPage = htmlWorker.EditBodyHtml("<nav>", indexHtmlPath, "<h1>No permissions to view this folder</h1>");
                     }
-                }
-                else
-                {
-                    if (Directory.Exists(RequestUri))
+
+                    break;
+                case ResponseType.File:
+                    if (File.Exists(path))
                     {
-                        var linksList = FileWorker.GetFileLinksList(RequestUri);
-                        string links = String.Join('\n', linksList);
-                        HtmlWorker.EditBodyHtml("<nav>", indexHtmlPath, links);
+                        htmlPage = "";
                     }
                     else
                     {
-                        if (!File.Exists(RequestUri))
-                        {
-                            SendError(Client, 404);
-                            return;
-                        }
+                        SendError(Client, 404);
+                        return;
                     }
-                }
-
+                    break;
             }
-
+            
             // Получаем расширение файла из строки запроса
-            string Extension = RequestUri.Substring(RequestUri.LastIndexOf('.'));
+            string Extension = responseType != ResponseType.File ? ".html" : RequestUri.Substring(RequestUri.LastIndexOf('.'));
 
             // Тип содержимого
             string ContentType = "";
@@ -167,12 +181,12 @@ namespace HTTPServer
                 case ".jpeg":
                 case ".png":
                 case ".gif":
-                    ContentType = "image/" + Extension.Substring(1);
+                    ContentType = $"image/{Extension.Substring(1)}";
                     break;
                 default:
                     if (Extension.Length > 1)
                     {
-                        ContentType = "application/" + Extension.Substring(1);
+                        ContentType = $"application/{Extension.Substring(1)}";
                     }
                     else
                     {
@@ -180,14 +194,17 @@ namespace HTTPServer
                     }
                     break;
             }
-
+            
             // Открываем файл, страхуясь на случай ошибки
-            FileStream FS;
+            FileStream FS = null;
             try
             {
-                FilePath = indexHtmlPath;
-                FS = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                
+                if (responseType == ResponseType.File)
+                {
+                    FilePath = path;
+                    FS = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                }
+
             }
             catch (Exception)
             {
@@ -195,23 +212,38 @@ namespace HTTPServer
                 SendError(Client, 500);
                 return;
             }
-
+            Byte[] sendBytes = Encoding.UTF8.GetBytes(htmlPage);
+            string contentLength = (FS == null ? sendBytes.Length : FS.Length).ToString();
             // Посылаем заголовки
-            string Headers = "HTTP/1.1 200 OK\nContent-Type: " + ContentType + "\nContent-Length: " + FS.Length + "\n\n";
+            string Headers = $"HTTP/1.1 200 OK\nContent-Type: {ContentType}\nContent-Length: {contentLength}\n\n";
             byte[] HeadersBuffer = Encoding.ASCII.GetBytes(Headers);
             Client.GetStream().Write(HeadersBuffer, 0, HeadersBuffer.Length);
 
-            // Пока не достигнут конец файла
-            while (FS.Position < FS.Length)
+            if (responseType != ResponseType.File)
             {
-                // Читаем данные из файла
-                Count = FS.Read(Buffer, 0, Buffer.Length);
-                // И передаем их клиенту
-                Client.GetStream().Write(Buffer, 0, Count);
+                try
+                {
+                    Client.GetStream().Write(sendBytes, 0, sendBytes.Length);
+                }
+                catch
+                {
+                    
+                }
             }
-
-            // Закроем файл и соединение
-            FS.Close();
+            else
+            {
+                // Пока не достигнут конец файла
+                while (FS.Position < FS.Length)
+                {
+                    // Читаем данные из файла
+                    Count = FS.Read(Buffer, 0, Buffer.Length);
+                    // И передаем их клиенту
+                    Client.GetStream().Write(Buffer, 0, Count);
+                }
+                // Закроем файл и соединение
+                FS.Close();
+            }
+            
             Client.Close();
         }
 
@@ -220,11 +252,11 @@ namespace HTTPServer
         {
             // Получаем строку вида "200 OK"
             // HttpStatusCode хранит в себе все статус-коды HTTP/1.1
-            string CodeStr = Code.ToString() + " " + ((HttpStatusCode)Code).ToString();
+            string CodeStr = $"{Code} {((HttpStatusCode) Code)}";
             // Код простой HTML-странички
-            string Html = "<html><body><h1>" + CodeStr + "</h1></body></html>";
+            string Html = $"<html><body><h1>{CodeStr}</h1></body></html>";
             // Необходимые заголовки: ответ сервера, тип и длина содержимого. После двух пустых строк - само содержимое
-            string Str = "HTTP/1.1 " + CodeStr + "\nContent-type: text/html\nContent-Length:" + Html.Length.ToString() + "\n\n" + Html;
+            string Str = $"HTTP/1.1 {CodeStr}\nContent-type: text/html\nContent-Length:{Html.Length}\n\n{Html}";
             // Приведем строку к виду массива байт
             byte[] Buffer = Encoding.ASCII.GetBytes(Str);
             // Отправим его клиенту
