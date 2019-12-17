@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 using System;
+using System.Text.Unicode;
 
 namespace exam
 {
@@ -47,36 +48,21 @@ namespace exam
                 SendError(client, 400);
                 return;
             }
-
+            HtmlWorker htmlWorker = new HtmlWorker();
             string path = "";
-            ResponseType responseType = ResponseType.Drives;
-
-            if (requestUri.Equals("/"))
-            {
-                path = "/";
-                responseType = ResponseType.Drives;
-            }
-
-            if (requestUri.Contains("path="))
-            {
-                path = requestUri.Substring(requestUri.IndexOf("=", StringComparison.Ordinal) + 1);
-                responseType = ResponseType.Directory;
-                if (requestUri.Contains("."))
-                {
-                    responseType = ResponseType.File;
-                }
-            }
-
-            if (path != String.Empty && responseType != ResponseType.Drives && path.Length < 4)
-            {
-                responseType = ResponseType.DriveRoot;
-            }
+            ResponseType responseType = htmlWorker.GetResponseType(requestUri);
+            
+            path = responseType == ResponseType.Drives
+                ? "/"
+                : responseType == ResponseType.Directory || responseType == ResponseType.File || responseType == ResponseType.DriveRoot
+                    ? requestUri.Substring(requestUri.IndexOf("=", StringComparison.Ordinal) + 1)
+                    : "";
 
             string FilePath;
 
             DriveInfo[] allDrives = FileWorker._allDrives;
             string htmlPage = "";
-            HtmlWorker htmlWorker = new HtmlWorker();
+            
             switch (responseType)
             {
                 case ResponseType.Drives:
@@ -149,6 +135,8 @@ namespace exam
 
             switch (extension)
             {
+                case ".log":
+                case  ".txt":
                 case ".htm":
                 case ".html":
                     contentType = "text/html";
@@ -214,12 +202,35 @@ namespace exam
             }
             else
             {
-                while (fs != null && fs.Position < fs.Length)
+                if (contentType == "text/html" && responseType == ResponseType.File)
                 {
-                    count = fs.Read(buffer, 0, buffer.Length);
+                    try
+                    {
+                        StreamReader sr = new StreamReader(path);
+                        string textBuffer = sr.ReadToEnd();
+                        textBuffer = textBuffer.Replace("\n", "<br>")
+                            .Replace("\t", "<span style=\"padding: 0px 10px;\">&nbsp;</span>");
+                        byte[] page = Encoding.UTF8.GetBytes(textBuffer);
+                        client.GetStream().Write(page, 0, page.Length);
 
-                    client.GetStream().Write(buffer, 0, count);
+                    }
+                    catch (Exception)
+                    {
+                        SendError(client, 500);
+                        return;
+                    }
+                    
                 }
+                else
+                {
+                    while (fs != null && fs.Position < fs.Length)
+                    {
+                        count = fs.Read(buffer, 0, buffer.Length);
+
+                        client.GetStream().Write(buffer, 0, count);
+                    }
+                }
+                
 
                 if (fs != null) fs.Close();
             }

@@ -78,5 +78,36 @@ namespace exam
         {
             return $"<a href='{path}'>{name}</a><br>";
         }
+
+        public ResponseType GetResponseType(string requestUri)
+        {
+            string path = "";
+            ResponseType responseType = ResponseType.Drives;
+
+            if (requestUri.Equals("/"))
+            {
+                path = "/";
+                responseType = ResponseType.Drives;
+            }
+
+            if (requestUri.Contains("path="))
+            {
+                path = requestUri.Substring(requestUri.IndexOf("=", StringComparison.Ordinal) + 1);
+                responseType = ResponseType.Directory;
+                if (requestUri.Contains("."))
+                {
+                    responseType = ResponseType.File;
+                }
+            }
+
+            if (path != String.Empty && responseType != ResponseType.Drives && path.Length < 4)
+            {
+                responseType = ResponseType.DriveRoot;
+            }
+
+            return responseType;
+        }
+        
+        
     }
 }
