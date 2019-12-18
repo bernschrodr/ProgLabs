@@ -136,6 +136,7 @@ namespace exam
             switch (extension)
             {
                 case ".log":
+                case ".LOG":
                 case  ".txt":
                 case ".htm":
                 case ".html":
