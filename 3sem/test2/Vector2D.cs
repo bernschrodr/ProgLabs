@@ -19,7 +19,7 @@ namespace test2
             double x2 = secondPoint.X;
             double y2 = secondPoint.Y;
             
-            double hypotenuse = Math.Sqrt(Math.Pow(Math.Abs(x2) + Math.Abs(x1), 2) + Math.Pow(Math.Abs(y2) + Math.Abs(y1), 2));
+            double hypotenuse = Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
             return hypotenuse;
         }
         
@@ -27,6 +27,8 @@ namespace test2
         {
             return new Vector2D(firstTerm.X + secondTerm.X,firstTerm.Y + secondTerm.Y);
         }
+
+        public override string ToString() => $"X:{X} Y:{Y}";
         
     }
 }

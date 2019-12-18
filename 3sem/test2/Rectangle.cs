@@ -32,10 +32,8 @@
             return this;
         }
 
-        public override string ToString()
-        {
-            return
-                $"A:({TopLeft.X},{TopLeft.Y}) B:({TopRight.X},{TopRight.Y}) C:({BottomLeft.X},{BottomLeft.Y}) D:({BottomRight.X},{BottomRight.Y})";
-        }
+        public override string ToString() =>
+            $"A:({TopLeft.X},{TopLeft.Y}) B:({TopRight.X},{TopRight.Y}) C:({BottomLeft.X},{BottomLeft.Y}) D:({BottomRight.X},{BottomRight.Y}) " 
+            + $"Perimeter:({GetPerimeter()}) Square:({GetSquare()})";
     }
 }
