@@ -23,7 +23,7 @@ namespace test2
         }
 
         [Test]
-        public void OutputTest()
+        public void CheckOutputTest()
         {
             var result = rect.ToString();
             var t =
@@ -39,8 +39,8 @@ namespace test2
             var result = rect.MoveFigure(moveVector).ToString();
             var t = $"A:(-12,4) B:(-2,4) C:(-12,-6) D:(-2,-6) "
                     + $"Perimeter:(40) Square:(100)";
-            Assert.AreEqual(result,t);
-            
+            Assert.AreEqual(result, t);
+
         }
     }
 }
