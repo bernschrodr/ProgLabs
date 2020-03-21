@@ -27,8 +27,25 @@ public class Main {
             }
             System.out.println();
         }
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length - i; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[matrix.length - 1 - j][matrix.length - 1 - i];
+                matrix[matrix.length - 1 - j][matrix.length - 1 - i] = temp;
+            }
+        }
+        
         System.out.println();
 
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        
 
     }
 }

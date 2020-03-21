@@ -43,5 +43,13 @@ public class Main {
         for (GenericItem genericItem : arrayItems) {
             genericItem.printAll();
         }
+
+        String line = "Конфеты ’Маска’;45;120";
+        String[] item_fld = line.split(";");
+        String name = item_fld[0];
+        float price = Float.parseFloat(item_fld[1]);
+        short expires = Short.parseShort(item_fld[2]);
+        FoodItem food = new FoodItem(name, price, expires);
+        food.printAll();
     }
 }
