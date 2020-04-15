@@ -1,7 +1,7 @@
-package StockListProject.src.ru.billing.client;
+package ru.billing.client;
 
 import java.util.Date;
-import StockListProject.src.ru.billing.stocklist.*;
+import ru.billing.stocklist.*;
 
 public class CatalogStubLoader implements CatalogLoader {
   public void load(ItemCatalog cat) {

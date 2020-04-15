@@ -1,7 +1,7 @@
-package StockListProject.src.ru.billing.client;
+package ru.billing.client;
 
 import java.util.Date;
-import StockListProject.src.ru.billing.stocklist.*;
+import ru.billing.stocklist.*;
 
 /**
  * Main
@@ -9,6 +9,7 @@ import StockListProject.src.ru.billing.stocklist.*;
 public class Main {
 
     public static void main(String[] args) {
+        // Заполнение каталога
         GenericItem milkItem = new GenericItem();
         milkItem.setID(1);
         milkItem.setName("milk");
@@ -41,30 +42,37 @@ public class Main {
         FoodItem twixItem = new FoodItem("twix", 63, (short) 70);
         FoodItem pastaItem = new FoodItem("pasta", 73, (short) 100);
         FoodItem saltItem = new FoodItem("salt", 31, (short) 400);
-        FoodItem pepsiItem = new FoodItem("pepsi", 69, (short) 100);
+        FoodItem pepsiItem = new FoodItem("pepsi", 120, (short) 100);
 
         GenericItem[] itemsArray = { marsItem, twixItem, pastaItem, saltItem, pepsiItem, iphoneItem, chipsItem,
                 meatItem, waterItem, milkItem };
         ItemCatalog catalog = new ItemCatalog();
+        TaskItemCatalog catalog1 = new TaskItemCatalog();
 
         for (var i : itemsArray) {
             catalog.addItem(i);
+            catalog1.add(i);
         }
 
-        long begin = new Date().getTime();
-        for (int i = 0; i < 100000; i++)
-            catalog.findItemByID(10);
-        long end = new Date().getTime();
-        System.out.println("In HashMap: " + (end - begin));
-        begin = new Date().getTime();
-        for (int i = 0; i < 100000; i++)
-            catalog.findItemByIDAL(10);
-        end = new Date().getTime();
-        System.out.println("In ArrayList: " + (end - begin));
+//        // Сравнение времени выполнения
+//        long begin = new Date().getTime();
+//        for (int i = 0; i < 100000; i++)
+//            catalog.findItemByID(10);
+//        long end = new Date().getTime();
+//        System.out.println("In HashMap: " + (end - begin));
+//        begin = new Date().getTime();
+//        for (int i = 0; i < 100000; i++)
+//            catalog.findItemByIDAL(10);
+//        end = new Date().getTime();
+//        System.out.println("In ArrayList: " + (end - begin));
 
+        // загрузка лоадером
         CatalogLoader loader = new CatalogStubLoader();
         loader.load(catalog);
-        catalog.printItems();
+        //catalog.printItems();
+
+        var set = catalog1.findByCategoryAndPrice(ItemCategory.FOOD,true);
+        System.out.println(set);
 
     }
 }

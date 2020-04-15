@@ -1,6 +1,5 @@
-package StockListProject.src.ru.billing.client;
-
-import StockListProject.src.ru.billing.stocklist.*;
+package ru.billing.client;
+import ru.billing.stocklist.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

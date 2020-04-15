@@ -1,4 +1,4 @@
-package StockListProject.src.ru.billing.client;
+package ru.billing.client;
 
 public interface CatalogLoader {
   public void load(ItemCatalog cat);

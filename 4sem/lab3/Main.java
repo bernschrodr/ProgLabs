@@ -51,5 +51,12 @@ public class Main {
         short expires = Short.parseShort(item_fld[2]);
         FoodItem food = new FoodItem(name, price, expires);
         food.printAll();
+
+        String taskLine = "Конфеты ’Маска’   :   45;120-13_152213";
+        String delim = "[\s]*[-:;_]+[\s]*";
+        String[] arrTaskLine = taskLine.split(delim);
+        for (var i : arrTaskLine) {
+            System.out.println(i);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package StockListProject.src.ru.billing.stocklist;
+package ru.billing.stocklist;
 
 /**
  * GenericItem
@@ -10,12 +10,14 @@ public class GenericItem {
     private float price; // Цена товара
     private ItemCategory category = ItemCategory.GENERAL;
     private GenericItem analog;
+    private PriceCategory priceCategory;
 
     static int currentID;
 
     public GenericItem(String name, float price, ItemCategory category) {
         this.name = name;
         this.price = price;
+        setPriceCategory(price);
         this.category = category;
         this.ID = GenericItem.currentID++;
     }
@@ -23,6 +25,7 @@ public class GenericItem {
     public GenericItem(String name, float price, GenericItem analog) {
         this.name = name;
         this.price = price;
+        setPriceCategory(price);
         this.analog = analog;
         this.ID = GenericItem.currentID++;
     }
@@ -41,6 +44,18 @@ public class GenericItem {
 
         String str = String.format("ID: %d , Name: %s , price:%5.2f , category:%s \n", ID, name, price, category);
         return str;
+    }
+
+    private void setPriceCategory(float price){
+        if (price < 100) {
+            priceCategory = PriceCategory.CHEAP;
+        } else {
+            priceCategory = PriceCategory.EXPENSIVE;
+        }
+    }
+
+    public PriceCategory getPriceCategory() {
+        return priceCategory;
     }
 
     public GenericItem getAnalog() {
@@ -81,6 +96,7 @@ public class GenericItem {
 
     public void setPrice(float price) {
         this.price = price;
+        setPriceCategory(price);
     }
 
 }

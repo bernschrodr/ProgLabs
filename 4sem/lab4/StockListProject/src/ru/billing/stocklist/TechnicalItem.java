@@ -1,4 +1,4 @@
-package StockListProject.src.ru.billing.stocklist;
+package ru.billing.stocklist;
 
 /**
  * TechnicalItem
