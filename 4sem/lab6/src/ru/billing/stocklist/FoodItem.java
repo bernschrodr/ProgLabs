@@ -2,9 +2,6 @@ package ru.billing.stocklist;
 
 import java.util.Date;
 
-/**
- * FoodItem
- */
 public class FoodItem extends GenericItem {
 
     private Date dateOfIncome;

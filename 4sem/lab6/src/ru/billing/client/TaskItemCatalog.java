@@ -1,5 +1,4 @@
 package ru.billing.client;
-
 import ru.billing.stocklist.GenericItem;
 import ru.billing.stocklist.ItemCategory;
 import ru.billing.stocklist.PriceCategory;
@@ -7,7 +6,7 @@ import ru.billing.stocklist.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.ArrayList;
+
 
 public class TaskItemCatalog {
     private HashMap<Integer, GenericItem> catalog = new HashMap<Integer, GenericItem>();

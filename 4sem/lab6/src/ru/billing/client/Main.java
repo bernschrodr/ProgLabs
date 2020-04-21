@@ -2,38 +2,35 @@ package ru.billing.client;
 
 import java.util.Date;
 import ru.billing.stocklist.*;
+import ru.itmo.exceptions.CatalogLoadException;
+import ru.itmo.exceptions.ItemAlreadyExistsException;
 
 /**
  * Main
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CatalogLoadException, ItemAlreadyExistsException {
         // Заполнение каталога
         GenericItem milkItem = new GenericItem();
-        milkItem.setID(1);
         milkItem.setName("milk");
         milkItem.setPrice((float) 52.13);
 
         GenericItem waterItem = new GenericItem();
-        waterItem.setID(2);
         waterItem.setName("water");
         waterItem.setPrice((float) 31);
 
         GenericItem meatItem = new GenericItem();
-        meatItem.setID(3);
         meatItem.setName("meat");
         meatItem.setPrice((float) 300);
 
         FoodItem chipsItem = new FoodItem();
-        chipsItem.setID(4);
         chipsItem.setName("chips");
         chipsItem.setPrice((float) 49.9);
         chipsItem.setExpires((short) 80);
         chipsItem.setDateOfIncome(new Date());
 
         TechnicalItem iphoneItem = new TechnicalItem();
-        iphoneItem.setID(5);
         iphoneItem.setName("Iphone");
         iphoneItem.setPrice(75000);
         iphoneItem.setWarrantyTime((short) 365);

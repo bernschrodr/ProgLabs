@@ -12,7 +12,7 @@ public class GenericItem {
     private GenericItem analog;
     private PriceCategory priceCategory;
 
-    static int currentID;
+    static int currentID = 1;
 
     public GenericItem(String name, float price, ItemCategory category) {
         this.name = name;
