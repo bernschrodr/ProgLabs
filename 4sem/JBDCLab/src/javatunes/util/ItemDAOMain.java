@@ -13,6 +13,9 @@ public class ItemDAOMain {
         Connection conn = null;
 
         conn = DriverManager.getConnection("jdbc:derby://localhost:1527/JavaTunesDB");
+        System.out.println(conn.getTransactionIsolation());
+        conn.setTransactionIsolation(4);
+        System.out.println(conn.getTransactionIsolation());
 
         ItemDAO itemDAO = new ItemDAO(conn);
         mi = itemDAO.searchById(1L);
@@ -43,6 +46,12 @@ public class ItemDAOMain {
         cmi = itemDAO.searchByKeyword("of");
         System.out.println(cmi.toString());
 
-
+        System.out.println("BEFORE: ");
+        System.out.println(itemDAO.searchById(1L));
+        System.out.println(itemDAO.searchById(2L));
+        itemDAO.swap(1,2);
+        System.out.println("AFTER: ");
+        System.out.println(itemDAO.searchById(1L));
+        System.out.println(itemDAO.searchById(2L));
     }
 }
