@@ -2,6 +2,7 @@ package ru.billing.client;
 
 import java.util.Date;
 import ru.billing.stocklist.*;
+import ru.itmo.client.CatalogFileLoader;
 import ru.itmo.exceptions.CatalogLoadException;
 import ru.itmo.exceptions.ItemAlreadyExistsException;
 
@@ -70,6 +71,9 @@ public class Main {
 
         var set = catalog1.findByCategoryAndPrice(ItemCategory.FOOD,false);
         System.out.println(set);
+
+        var fls = new CatalogFileLoader("./products.txt");
+        fls.load(catalog);
 
     }
 }

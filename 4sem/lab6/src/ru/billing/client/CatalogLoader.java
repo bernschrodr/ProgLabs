@@ -3,5 +3,5 @@ package ru.billing.client;
 import ru.itmo.exceptions.CatalogLoadException;
 
 public interface CatalogLoader {
-  public void load(ItemCatalog cat) throws CatalogLoadException;
+  public void load(ItemCatalog cat);
 }

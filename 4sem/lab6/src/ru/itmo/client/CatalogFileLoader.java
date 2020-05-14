@@ -9,11 +9,12 @@ import ru.itmo.exceptions.ItemAlreadyExistsException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Date;
 import java.util.Scanner;
 
 public class CatalogFileLoader implements CatalogLoader {
 
-    private String fileName;
+    private final String fileName;
 
     public CatalogFileLoader(String fileName) {
         this.fileName = fileName;
@@ -38,10 +39,7 @@ public class CatalogFileLoader implements CatalogLoader {
                 FoodItem item = new FoodItem(name, price, null, new Date(), expires);
                 cat.addItem(item);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new CatalogLoadException(e);
-        } catch (ItemAlreadyExistsException e) {
+        } catch (FileNotFoundException | ItemAlreadyExistsException e) {
             e.printStackTrace();
             throw new CatalogLoadException(e);
         }
@@ -49,4 +47,3 @@ public class CatalogFileLoader implements CatalogLoader {
 
 }
 
-}
