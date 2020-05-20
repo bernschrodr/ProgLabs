@@ -37,15 +37,16 @@ println(variable)
 variable = 10
 println(variable.getClass().getName())
 
-Date february = new Date(2015,2,28)
-Date january = new Date(2015,1,31)
+Date february = new Date(115,1,28)
+Date january = new Date(115,0,31)
 
 def result = new Date(february.getTime() - january.getTime())
+println(result)
 def prevMonth = result[MONTH] - 1
 result.set(month :prevMonth)
 def nextMonth = result[MONTH] + 1
 result.set(month :nextMonth)
-result.next()
+++result
 
 println(result)
 

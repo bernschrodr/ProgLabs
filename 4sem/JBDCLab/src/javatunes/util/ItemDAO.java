@@ -140,6 +140,13 @@ public class ItemDAO {
 
         m_conn.setAutoCommit(false);
 
+        int buf = 0;
+        if(idFirst < idSecond){
+            buf = idSecond;
+            idSecond = idFirst;
+            idFirst = buf;
+        }
+
         String firstId = "SELECT PRICE FROM GUEST.ITEM WHERE ITEM_ID = ?";
         String secondId = "SELECT PRICE FROM GUEST.ITEM WHERE ITEM_ID = ?";
         ResultSet rsFirstId;
