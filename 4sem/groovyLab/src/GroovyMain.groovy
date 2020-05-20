@@ -4,6 +4,12 @@ class GroovyMain {
     long lng
     private def pr = "pr"
 
+    GroovyMain(Binding binding) {
+        value = binding.getProperty("value")
+        str = binding.getProperty("str")
+        lng = binding.getProperty("lng")
+    }
+
     public static void main(String[] args) {
         println("Welcome,Groovy")
     }

@@ -1,4 +1,4 @@
-import groovy.lang.Binding
+import static java.util.Calendar.MONTH
 import sun.misc.Unsafe
 
 def firstclass = new GroovyMain(10, "HI", 455L)
@@ -37,7 +37,30 @@ println(variable)
 variable = 10
 println(variable.getClass().getName())
 
-Date february = new Date(1423353600L)
-Date january = new Date(1422662400L)
+Date february = new Date(2015,2,28)
+Date january = new Date(2015,1,31)
 
-Date result = february - january
+def result = new Date(february.getTime() - january.getTime())
+def prevMonth = result[MONTH] - 1
+result.set(month :prevMonth)
+def nextMonth = result[MONTH] + 1
+result.set(month :nextMonth)
+result.next()
+
+println(result)
+
+/// 3
+
+def closureDivide = {
+    a, b -> a / b
+}
+
+def closureMinus = {
+    a, b -> a - b
+}
+
+def closureBoth = {
+    a, b, c -> closureMinus(closureDivide(a, b), c)
+}
+
+println(closureBoth(1,4,5))
