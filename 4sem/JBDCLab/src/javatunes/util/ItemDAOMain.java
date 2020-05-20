@@ -53,5 +53,12 @@ public class ItemDAOMain {
         System.out.println("AFTER: ");
         System.out.println(itemDAO.searchById(1L));
         System.out.println(itemDAO.searchById(2L));
+
+
+        //Read Uncommited - Dirty Read
+        //Read Commited - UPDATE,DELETE,INSERT Неповторяющееся чтение, фантомное чтение
+        //Repeatable Read - Чтение фантомов
+        //Serializable
+
     }
 }
